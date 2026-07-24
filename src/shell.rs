@@ -1,4 +1,5 @@
-use rustyline::DefaultEditor;
+use rustyline::Editor;
+use rustyline::history::DefaultHistory;
 
 use crate::{
     completion::AstraCompleter,
@@ -13,7 +14,8 @@ pub fn start() {
 
     let config = config::load();
 
-    let mut readline = DefaultEditor::new()
+    let mut readline =
+        Editor::<AstraCompleter, DefaultHistory>::new()
         .expect("failed to initialize terminal");
 
 
