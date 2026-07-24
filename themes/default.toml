@@ -1,0 +1,9 @@
+name = "Astra Dark"
+
+prompt_symbol = "❯"
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
