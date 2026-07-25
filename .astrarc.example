@@ -1,5 +1,2 @@
 theme = "default"
-
-history_size = 5000
-
 git_prompt = true
