@@ -1,0 +1,27 @@
+name = "Crimson"
+
+layout = "power"
+
+prompt_symbol = "❯"
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+
+primary = "#B22222"
+secondary = "#8B0000"
+accent = "#DC143C"
+
+background = "#0D0D0D"
+foreground = "#F5F5F5"
+
+directory = "#DCDCDC"
+git = "#B22222"
+time = "#999999"
+
+success = "#55AA55"
+error = "#CC4444"
+
+separator = "│"
