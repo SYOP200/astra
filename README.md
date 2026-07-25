@@ -1,3 +1,5 @@
+![readme banner](</assets/banner.png>)
+
 # Astra Shell
 
 A modern shell built from the ground up for macOS.
