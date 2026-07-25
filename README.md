@@ -1,19 +1,22 @@
 <a>
  
 <p align="center">
-  <img src="/assets/banner.png" alt="readme banner">
+  <img src="./assets/banner.png" alt="readme banner">
 </p>
 </a>
 
 <div align=center>
+<a>
  
 ![Rust](https://img.shields.io/badge/Built%20with-Rust-800000?style=flat-square&logo=rust&logoColor=white)
 ![macOS](https://img.shields.io/badge/Target-macOS-8B0000?style=flat-square&logo=apple&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Community-660000?style=flat-square&logo=github&logoColor=white)
+</a>
 </div>
 
 <div align=center>
-[█████████░░░░░░░░░░░] 45%
+ 
+<a> ![Project Progress](./assets/progress.svg) </a>
 </div>
 
 # Astra Shell
@@ -26,6 +29,17 @@ Astra is an interactive command-line environment focused on a clean interface, c
 > Astra Shell has not gone through extensive testing yet. <br>
 > Wait until the first working release to start using, use at your own risk.
 
+## Table of contents
+- [Features](https://github.com/SYOP200/astra-shell/tree/main#features)
+- [Screenshots](https://github.com/SYOP200/astra-shell/tree/main#screenshots)
+- [Installation](https://github.com/SYOP200/astra-shell/tree/main#installation)
+- [Requirements](https://github.com/SYOP200/astra-shell/tree/main#requirements)
+- [Usage](https://github.com/SYOP200/astra-shell/tree/main#usage)
+- [Themes](https://github.com/SYOP200/astra-shell/tree/main#themes)
+- [Why Astra?](https://github.com/SYOP200/astra-shell/tree/main#why-astra?)
+- [Contributing](https://github.com/SYOP200/astra-shell/tree/main#contributing)
+- [License](https://github.com/SYOP200/astra-shell/tree/main#license)
+- [Status](https://github.com/SYOP200/astra-shell/tree/main#status)
 ## Features
 
 - Custom interactive shell
