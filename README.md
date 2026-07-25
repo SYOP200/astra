@@ -71,7 +71,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 Clone Astra:
 ```bash
-git clone https://github.com/yourusername/astra.git
+git clone https://github.com/SYOP200/astra-shell
 cd astra
 ```
 Build:
@@ -132,7 +132,10 @@ Example:
 ```
 themes/
    - default.toml
-   - minimal.toml (coming soon)
+   - crimson.toml
+   - matrix.toml
+   - midnight.toml
+   - obsidian.toml
    - cyberpunk.toml (coming soon)
 ```
 A theme can control:
