@@ -1,20 +1,8 @@
-name: Automated Changelog Updater
+name: Zero-Input Changelog Updater
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_name:
-        description: 'Release Name (e.g., v1.2.0)'
-        required: true
-        type: string
-      four_word_summary:
-        description: '4-word feature description'
-        required: true
-        type: string
-      full_description:
-        description: 'Full description and details of what changed'
-        required: true
-        type: string
+  release:
+    types: [published]
 
 jobs:
   update-changelog:
@@ -26,29 +14,37 @@ jobs:
     - name: Checkout repository code
       uses: actions/checkout@v4
 
-    - name: Prepend changes to CHANGELOG.md
+    - name: Append changes to the bottom of CHANGELOG.md
       run: |
-        # Create changelog file if it does not exist
-        touch CHANGELOG.md
+        # Initialize file with a base header if it is completely empty
+        if [ ! -s CHANGELOG.md ]; then
+          echo "# Changelog" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+        fi
 
-        # Format the new entry into a temporary file
-        cat << 'EOF' > new_entry.txt
-        ## ${{ inputs.release_name }} - ${{ inputs.four_word_summary }}
+        # Extract event variables
+        RELEASE_NAME="${{ github.event.release.name }}"
+        FULL_DESC="${{ github.event.release.body }}"
 
-        ${{ inputs.full_description }}
+        if [ -z "$RELEASE_NAME" ]; then
+          RELEASE_NAME="${{ github.event.release.tag_name }}"
+        fi
 
-        ---
+        # Isolate the first 4 words for the subtitle header
+        FOUR_WORDS=$(echo "$FULL_DESC" | tr -d '*#`_-' | awk '{print $1,$2,$3,$4}')
 
-        EOF
-
-        # Append old logs below the new entry
-        cat CHANGELOG.md >> new_entry.txt
-        mv new_entry.txt CHANGELOG.md
+        # Append the structured release block to the bottom of the file
+        echo "" >> CHANGELOG.md
+        echo "## $RELEASE_NAME - $FOUR_WORDS" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "$FULL_DESC" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "---" >> CHANGELOG.md
 
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add CHANGELOG.md
-        git commit -m "docs: update CHANGELOG.md for ${{ inputs.release_name }} [skip ci]" || echo "No changes"
+        git commit -m "docs: append ${{ github.event.release.tag_name }} to changelog [skip ci]" || echo "No changes"
         git push
