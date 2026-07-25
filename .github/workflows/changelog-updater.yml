@@ -27,15 +27,22 @@ jobs:
           echo "" >> CHANGELOG.md
         fi
 
-        # Fetch latest release data from GitHub API to handle scheduled/manual runs safely
-        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/latest)
-        RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.name // .tag_name')
-        FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.body')
+        # Fetch latest release data. --fail=false prevents the 404 crash if no releases exist yet
+        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/latest --fail=false)
 
-        # Fallback values if no release exists in the repository yet
-        if [ "$RELEASE_NAME" = "null" ] || [ -z "$RELEASE_NAME" ]; then
+        # Parse data safely
+        if [ -z "$RELEASE_DATA" ]; then
           RELEASE_NAME="v0.0.0"
           FULL_DESC="Initial repository tracking started."
+        else
+          RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.name // .tag_name')
+          FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.body // "No description provided."')
+          
+          # Secondary safety fallback if jq outputs null strings
+          if [ "$RELEASE_NAME" = "null" ] || [ -z "$RELEASE_NAME" ]; then
+            RELEASE_NAME="v0.0.0"
+            FULL_DESC="Initial repository tracking started."
+          fi
         fi
 
         # Isolate the first 4 words for the subtitle header
