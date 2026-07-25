@@ -16,7 +16,7 @@
  
 <div align=center>
  
-<a> ![Project Progress](./assets/progress.svg) </a>
+<a> █████████░░░░░░░░░░░ 45% </a>
 </div>
 
 # Astra Shell
