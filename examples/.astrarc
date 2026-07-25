@@ -1,0 +1,65 @@
+[general]
+
+theme = "crimson"
+startup_message = true
+update_check = false
+telemetry = false
+
+
+[prompt]
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+symbol = "❯"
+
+
+[history]
+
+enabled = true
+file = "~/.astra_history"
+size = 10000
+deduplicate = true
+ignore_duplicates = true
+
+
+[completion]
+
+enabled = true
+case_sensitive = false
+show_hidden_files = false
+max_results = 20
+
+
+[behavior]
+
+confirm_exit = true
+allow_scripts = true
+auto_cd = false
+vi_mode = false
+
+
+[aliases]
+
+ll = "ls -la"
+la = "ls -a"
+gs = "git status"
+gc = "git commit"
+gp = "git push"
+gpl = "git pull"
+
+
+[plugins]
+
+enabled = true
+directory = "~/.astra/plugins"
+
+
+[appearance]
+
+unicode = true
+nerd_fonts = true
+animations = true
+compact = false
