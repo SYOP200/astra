@@ -8,6 +8,7 @@ mod config;
 mod theme;
 mod git;
 mod completion;
+mod aliases;
 
 fn main() {
     shell::start();
