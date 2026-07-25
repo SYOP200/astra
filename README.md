@@ -211,5 +211,6 @@ pie title Development
     "Debugging" : 15
     "Reviewing" : 27
     "Analyzing vulnerability impact" : 20
-    "Writing code" : 38
+    "Writing code" : 28
+    "Planning" : 10
 ```
