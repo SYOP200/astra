@@ -1,0 +1,27 @@
+name = "Matrix"
+
+layout = "compact"
+
+prompt_symbol = ">"
+
+show_user = true
+show_hostname = false
+show_directory = true
+show_git = true
+show_time = false
+
+primary = "#00FF66"
+secondary = "#00CC55"
+accent = "#66FF99"
+
+background = "#000000"
+foreground = "#00FF66"
+
+directory = "#55FF88"
+git = "#00CC44"
+time = "#00AA33"
+
+success = "#00FF66"
+error = "#FF5555"
+
+separator = "|"
