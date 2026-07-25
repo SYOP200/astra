@@ -6,6 +6,7 @@ use std::{
 };
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct Config {
     pub general: GeneralConfig,
     pub prompt: PromptConfig,
@@ -18,6 +19,7 @@ pub struct Config {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct GeneralConfig {
     pub theme: String,
     pub startup_message: bool,
@@ -26,6 +28,7 @@ pub struct GeneralConfig {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct PromptConfig {
     pub show_user: bool,
     pub show_hostname: bool,
@@ -36,6 +39,7 @@ pub struct PromptConfig {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct HistoryConfig {
     pub enabled: bool,
     pub file: String,
@@ -45,6 +49,7 @@ pub struct HistoryConfig {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct CompletionConfig {
     pub enabled: bool,
     pub case_sensitive: bool,
@@ -53,6 +58,7 @@ pub struct CompletionConfig {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct BehaviorConfig {
     pub confirm_exit: bool,
     pub allow_scripts: bool,
@@ -61,12 +67,14 @@ pub struct BehaviorConfig {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct PluginConfig {
     pub enabled: bool,
     pub directory: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(default)]
 pub struct AppearanceConfig {
     pub unicode: bool,
     pub nerd_fonts: bool,
@@ -78,57 +86,99 @@ pub struct AppearanceConfig {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            general: GeneralConfig {
-                theme: "crimson".into(),
-                startup_message: true,
-                update_check: false,
-                telemetry: false,
-            },
-
-            prompt: PromptConfig {
-                show_user: true,
-                show_hostname: true,
-                show_directory: true,
-                show_git: true,
-                show_time: true,
-                symbol: "❯".into(),
-            },
-
-            history: HistoryConfig {
-                enabled: true,
-                file: "~/.astra_history".into(),
-                size: 10000,
-                deduplicate: true,
-                ignore_duplicates: true,
-            },
-
-            completion: CompletionConfig {
-                enabled: true,
-                case_sensitive: false,
-                show_hidden_files: false,
-                max_results: 20,
-            },
-
-            behavior: BehaviorConfig {
-                confirm_exit: true,
-                allow_scripts: true,
-                auto_cd: false,
-                vi_mode: false,
-            },
-
+            general: GeneralConfig::default(),
+            prompt: PromptConfig::default(),
+            history: HistoryConfig::default(),
+            completion: CompletionConfig::default(),
+            behavior: BehaviorConfig::default(),
             aliases: HashMap::new(),
+            plugins: PluginConfig::default(),
+            appearance: AppearanceConfig::default(),
+        }
+    }
+}
 
-            plugins: PluginConfig {
-                enabled: true,
-                directory: "~/.astra/plugins".into(),
-            },
 
-            appearance: AppearanceConfig {
-                unicode: true,
-                nerd_fonts: true,
-                animations: true,
-                compact: false,
-            },
+impl Default for GeneralConfig {
+    fn default() -> Self {
+        Self {
+            theme: "crimson".into(),
+            startup_message: true,
+            update_check: false,
+            telemetry: false,
+        }
+    }
+}
+
+
+impl Default for PromptConfig {
+    fn default() -> Self {
+        Self {
+            show_user: true,
+            show_hostname: true,
+            show_directory: true,
+            show_git: true,
+            show_time: true,
+            symbol: "❯".into(),
+        }
+    }
+}
+
+
+impl Default for HistoryConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            file: "~/.astra_history".into(),
+            size: 10000,
+            deduplicate: true,
+            ignore_duplicates: true,
+        }
+    }
+}
+
+
+impl Default for CompletionConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            case_sensitive: false,
+            show_hidden_files: false,
+            max_results: 20,
+        }
+    }
+}
+
+
+impl Default for BehaviorConfig {
+    fn default() -> Self {
+        Self {
+            confirm_exit: true,
+            allow_scripts: true,
+            auto_cd: false,
+            vi_mode: false,
+        }
+    }
+}
+
+
+impl Default for PluginConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            directory: "~/.astra/plugins".into(),
+        }
+    }
+}
+
+
+impl Default for AppearanceConfig {
+    fn default() -> Self {
+        Self {
+            unicode: true,
+            nerd_fonts: true,
+            animations: true,
+            compact: false,
         }
     }
 }
@@ -137,7 +187,6 @@ impl Default for Config {
 impl Config {
 
     pub fn load() -> Self {
-
         let path =
             dirs::home_dir()
                 .unwrap_or(PathBuf::from("."))
@@ -155,11 +204,16 @@ impl Config {
 
 
         toml::from_str(&contents)
-            .unwrap_or_else(|_| Self::default())
+            .unwrap_or_default()
     }
 
 
     pub fn alias(&self, name: &str) -> Option<&String> {
         self.aliases.get(name)
     }
+}
+
+
+pub fn load() -> Config {
+    Config::load()
 }
