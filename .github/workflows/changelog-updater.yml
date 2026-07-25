@@ -1,4 +1,4 @@
-name: Zero-Input Changelog Updater
+name: Changelog Updater
 
 on:
   release:
