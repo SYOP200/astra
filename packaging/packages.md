@@ -1,4 +1,0 @@
-```markdown
-- homebrew
-- rust/cargo
-```
