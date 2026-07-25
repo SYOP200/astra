@@ -1,11 +1,12 @@
-use std::fs;
-
 use serde::Deserialize;
 
-#[derive(Deserialize, Clone)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Theme {
     pub name: String,
+    pub layout: String,
+
     pub prompt_symbol: String,
+
     pub show_user: bool,
     pub show_hostname: bool,
     pub show_directory: bool,
@@ -13,11 +14,15 @@ pub struct Theme {
     pub show_time: bool,
 }
 
+
 impl Default for Theme {
     fn default() -> Self {
         Self {
-            name: "Astra Dark".into(),
+            name: "Crimson".into(),
+            layout: "power".into(),
+
             prompt_symbol: "❯".into(),
+
             show_user: true,
             show_hostname: true,
             show_directory: true,
@@ -27,16 +32,57 @@ impl Default for Theme {
     }
 }
 
-impl Theme {
-    pub fn load(name: &str) -> Self {
-        let path = format!("themes/{}.toml", name);
 
-        if let Ok(data) = fs::read_to_string(path) {
-            if let Ok(theme) = toml::from_str(&data) {
-                return theme;
-            }
-        }
+pub fn load(name: &str) -> Theme {
+    match name {
+        "crimson" => Theme {
+            name: "Crimson".into(),
+            layout: "power".into(),
+            prompt_symbol: "❯".into(),
 
-        Self::default()
+            show_user: true,
+            show_hostname: true,
+            show_directory: true,
+            show_git: true,
+            show_time: true,
+        },
+
+        "midnight" => Theme {
+            name: "Midnight".into(),
+            layout: "modern".into(),
+            prompt_symbol: "❯".into(),
+
+            show_user: true,
+            show_hostname: true,
+            show_directory: true,
+            show_git: true,
+            show_time: true,
+        },
+
+        "matrix" => Theme {
+            name: "Matrix".into(),
+            layout: "compact".into(),
+            prompt_symbol: ">".into(),
+
+            show_user: true,
+            show_hostname: false,
+            show_directory: true,
+            show_git: true,
+            show_time: false,
+        },
+
+        "obsidian" => Theme {
+            name: "Obsidian".into(),
+            layout: "minimal".into(),
+            prompt_symbol: "›".into(),
+
+            show_user: false,
+            show_hostname: false,
+            show_directory: true,
+            show_git: true,
+            show_time: false,
+        },
+
+        _ => Theme::default(),
     }
 }
