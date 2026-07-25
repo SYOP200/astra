@@ -1,5 +1,16 @@
-FROM SYOP200/astra:0.4.0
+FROM rust:latest
 
-COPY . /src/astra
+WORKDIR /astra
 
-RUN astra /src/SYOP200/bin/install --offline --noninteractive --yes
+COPY Cargo.toml Cargo.lock ./
+
+RUN mkdir src && \
+    echo "fn main() {}" > src/main.rs && \
+    cargo build --release && \
+    rm -rf src
+
+COPY . .
+
+RUN cargo build --release
+
+CMD ["./target/release/astra"]
