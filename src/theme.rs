@@ -3,8 +3,6 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize)]
 pub struct Theme {
     pub name: String,
-    pub layout: String,
-
     pub prompt_symbol: String,
 
     pub show_user: bool,
@@ -19,8 +17,6 @@ impl Default for Theme {
     fn default() -> Self {
         Self {
             name: "Crimson".into(),
-            layout: "power".into(),
-
             prompt_symbol: "❯".into(),
 
             show_user: true,
@@ -35,21 +31,9 @@ impl Default for Theme {
 
 pub fn load(name: &str) -> Theme {
     match name {
-        "crimson" => Theme {
-            name: "Crimson".into(),
-            layout: "power".into(),
-            prompt_symbol: "❯".into(),
-
-            show_user: true,
-            show_hostname: true,
-            show_directory: true,
-            show_git: true,
-            show_time: true,
-        },
 
         "midnight" => Theme {
             name: "Midnight".into(),
-            layout: "modern".into(),
             prompt_symbol: "❯".into(),
 
             show_user: true,
@@ -59,9 +43,9 @@ pub fn load(name: &str) -> Theme {
             show_time: true,
         },
 
+
         "matrix" => Theme {
             name: "Matrix".into(),
-            layout: "compact".into(),
             prompt_symbol: ">".into(),
 
             show_user: true,
@@ -71,9 +55,9 @@ pub fn load(name: &str) -> Theme {
             show_time: false,
         },
 
+
         "obsidian" => Theme {
             name: "Obsidian".into(),
-            layout: "minimal".into(),
             prompt_symbol: "›".into(),
 
             show_user: false,
@@ -82,6 +66,7 @@ pub fn load(name: &str) -> Theme {
             show_git: true,
             show_time: false,
         },
+
 
         _ => Theme::default(),
     }
