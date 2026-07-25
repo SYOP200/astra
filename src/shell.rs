@@ -2,21 +2,26 @@ use rustyline::Editor;
 use rustyline::history::DefaultHistory;
 
 use crate::{
+    aliases::AliasManager,
     completion::AstraCompleter,
     config,
     executor,
     history,
     parser,
-    prompt
+    prompt,
 };
 
 pub fn start() {
-
     let config = config::load();
+
+    let aliases =
+        AliasManager::new(
+            config.aliases.clone()
+        );
 
     let mut readline =
         Editor::<AstraCompleter, DefaultHistory>::new()
-        .expect("failed to initialize terminal");
+            .expect("failed to initialize terminal");
 
 
     readline.set_helper(
@@ -28,11 +33,12 @@ pub fn start() {
 
 
     loop {
+        let prompt =
+            prompt::render(&config);
 
-        let prompt = prompt::render(&config);
 
-
-        let input = readline.readline(&prompt);
+        let input =
+            readline.readline(&prompt);
 
 
         match input {
@@ -44,13 +50,22 @@ pub fn start() {
                 }
 
 
-                let _ = readline.add_history_entry(
-                    command.as_str()
-                );
+                let _ =
+                    readline.add_history_entry(
+                        command.as_str()
+                    );
+
+
+                let expanded =
+                    aliases.expand(
+                        &command
+                    );
 
 
                 let args =
-                    parser::parse(&command);
+                    parser::parse(
+                        &expanded
+                    );
 
 
                 executor::execute(args);
