@@ -205,11 +205,6 @@ impl Config {
     }
 
 
-    pub fn alias(&self, name: &str) -> Option<&String> {
-        self.aliases.get(name)
-    }
-
-
     pub fn theme(&self) -> crate::theme::Theme {
         crate::theme::load(
             &self.general.theme
