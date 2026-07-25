@@ -1,4 +1,9 @@
-<a> ![readme banner](</assets/banner.png>) </a>
+<a>
+ 
+<p align="center">
+  <img src="/assets/banner.png" alt="readme banner">
+</p>
+</a>
 
 <div align=center>
  
