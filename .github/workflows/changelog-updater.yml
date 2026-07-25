@@ -1,11 +1,11 @@
-name: Changelog Updater
+name: Multi-Trigger Changelog Updater
 
 on:
   release:
-    types: [published] # Triggers on new releases
+    types: [published]
   schedule:
-    - cron: '0 3 * * 1' # Triggers every Monday at 3:00 AM UTC
-  workflow_dispatch: # Triggers manually from the Actions tab
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
 
 jobs:
   update-changelog:
@@ -21,38 +21,33 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        # Initialize file with a base header if it is completely empty
         if [ ! -s CHANGELOG.md ]; then
           echo "# Changelog" > CHANGELOG.md
           echo "" >> CHANGELOG.md
         fi
 
-        # Fetch latest release data. --fail=false prevents the 404 crash if no releases exist yet
-        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/latest --fail=false)
+        # We append '|| true' to stop the 404 from crashing the whole workflow run
+        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/latest 2>/dev/null || true)
 
-        # Parse data safely
-        if [ -z "$RELEASE_DATA" ]; then
+        # Parse data safely if it's completely empty or if the API returned an error message
+        if [ -z "$RELEASE_DATA" ] || echo "$RELEASE_DATA" | jq -e '.message' >/dev/null 2>&1; then
           RELEASE_NAME="v0.0.0"
           FULL_DESC="Initial repository tracking started."
         else
           RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.name // .tag_name')
           FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.body // "No description provided."')
           
-          # Secondary safety fallback if jq outputs null strings
           if [ "$RELEASE_NAME" = "null" ] || [ -z "$RELEASE_NAME" ]; then
             RELEASE_NAME="v0.0.0"
             FULL_DESC="Initial repository tracking started."
           fi
         fi
 
-        # Isolate the first 4 words for the subtitle header
         FOUR_WORDS=$(echo "$FULL_DESC" | tr -d '*#`_-' | awk '{print $1,$2,$3,$4}')
 
-        # Check if this release version is already documented in the CHANGELOG
         if grep -q "## $RELEASE_NAME" CHANGELOG.md; then
           echo "Release $RELEASE_NAME already exists in CHANGELOG.md. Skipping entry creation."
         else
-          # Append the structured release block to the bottom of the file
           echo "" >> CHANGELOG.md
           echo "## $RELEASE_NAME - $FOUR_WORDS" >> CHANGELOG.md
           echo "" >> CHANGELOG.md
@@ -60,7 +55,6 @@ jobs:
           echo "" >> CHANGELOG.md
           echo "---" >> CHANGELOG.md
 
-          # Track that changes were actually made
           echo "CHANGES_MADE=true" >> $GITHUB_ENV
         fi
 
@@ -68,7 +62,7 @@ jobs:
       if: env.CHANGES_MADE == 'true'
       run: |
         git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add CHANGELOG.md
         git commit -m "docs: append latest release to changelog [skip ci]"
         git push
