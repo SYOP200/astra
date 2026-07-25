@@ -1,24 +1,15 @@
 <svg xmlns="http://w3.org" viewBox="0 0 450 40" width="450" height="40">
-  <style>
-    .retro-text {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 16px;
-      fill: #00ff00;
-      font-weight: bold;
-    }
-    .pulsing-bar {
-      fill: #00ff00;
-      animation: pulse 1.8s infinite ease-in-out;
-    }
-    @keyframes pulse {
-      0% { opacity: 0.4; }
-      50% { opacity: 1; }
-      100% { opacity: 0.4; }
-    }
-  </style>
+  <!-- Background terminal box -->
   <rect width="450" height="40" fill="#000000" rx="4" stroke="#333333" stroke-width="2"/>
   
-  <text x="15" y="25" class="retro-text pulsing-bar">[█████████</text>
+  <!-- Animated Progress Bar (45%) with safe inline animation -->
+  <text x="15" y="25" fill="#00ff00" font-family="Courier New, Courier, monospace" font-size="16" font-weight="bold">
+    [█████████
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" />
+  </text>
   
-  <text x="105" y="25" class="retro-text" fill="#333333">░░░░░░░░░░░] <tspan fill="#00ff00">45%</tspan></text>
+  <!-- Static Remaining Space (55%) -->
+  <text x="105" y="25" fill="#333333" font-family="Courier New, Courier, monospace" font-size="16" font-weight="bold">
+    ░░░░░░░░░░░] <tspan fill="#00ff00">45%</tspan>
+  </text>
 </svg>
