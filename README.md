@@ -12,6 +12,10 @@
 ![Open Source](https://img.shields.io/badge/Open%20Source-Community-660000?style=flat-square&logo=github&logoColor=white)
 </div>
 
+<div align=center>
+[█████████░░░░░░░░░░░] 45%
+</div>
+
 # Astra Shell
 
 A modern shell built from the ground up for macOS.
@@ -21,6 +25,7 @@ Astra is an interactive command-line environment focused on a clean interface, c
 >[!WARNING]
 > Astra Shell has not gone through extensive testing yet. <br>
 > Wait until the first working release to start using, use at your own risk.
+
 ## Features
 
 - Custom interactive shell
