@@ -16,9 +16,7 @@ pub fn load(
 
 
     if path.exists() {
-
         let _ = editor.load_history(&path);
-
     }
 }
 
