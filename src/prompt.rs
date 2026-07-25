@@ -1,5 +1,5 @@
 use chrono::Local;
-use colored::*;
+use crossterm::style::Stylize;
 use std::env;
 
 use crate::{
@@ -16,24 +16,19 @@ fn segment(icon: &str, text: &str) -> String {
 }
 
 pub fn render(config: &Config) -> String {
-
     let theme = config.theme();
 
     let mut prompt = String::new();
 
-
     prompt.push_str(
         &format!(
             "{}\n",
-            theme.name.bright_red()
+            theme.name.as_str().red()
         )
     );
 
-
     if theme.show_git && config.git_enabled() {
-
         if let Some(branch) = git::branch() {
-
             prompt.push_str(
                 &segment(
                     "",
@@ -45,9 +40,7 @@ pub fn render(config: &Config) -> String {
         }
     }
 
-
     if theme.show_user {
-
         let user = whoami::username();
 
         let hostname =
@@ -56,14 +49,12 @@ pub fn render(config: &Config) -> String {
                 .to_string_lossy()
                 .to_string();
 
-
         let identity =
             if theme.show_hostname {
                 format!("{}@{}", user, hostname)
             } else {
                 user
             };
-
 
         prompt.push_str(
             &segment(
@@ -75,15 +66,12 @@ pub fn render(config: &Config) -> String {
         prompt.push('\n');
     }
 
-
     if theme.show_directory {
-
         let directory =
             env::current_dir()
                 .unwrap()
                 .display()
                 .to_string();
-
 
         prompt.push_str(
             &segment(
@@ -93,14 +81,11 @@ pub fn render(config: &Config) -> String {
         );
     }
 
-
     if theme.show_time {
-
         let time =
             Local::now()
                 .format("%H:%M")
                 .to_string();
-
 
         prompt.push_str(
             &format!(
@@ -110,14 +95,12 @@ pub fn render(config: &Config) -> String {
         );
     }
 
-
     prompt.push_str(
         &format!(
             "{} ",
-            theme.prompt_symbol.bright_red()
+            theme.prompt_symbol.as_str().red()
         )
     );
-
 
     prompt
 }
