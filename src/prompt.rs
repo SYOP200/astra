@@ -4,7 +4,7 @@ use std::env;
 
 use crate::{
     config::Config,
-    git
+    git,
 };
 
 fn segment(icon: &str, text: &str) -> String {
@@ -17,91 +17,107 @@ fn segment(icon: &str, text: &str) -> String {
 
 pub fn render(config: &Config) -> String {
 
-    let mut top = String::new();
+    let theme = config.theme();
 
-    top.push_str(
+    let mut prompt = String::new();
+
+
+    prompt.push_str(
         &format!(
             "{}\n",
-            "╭─ Astra".bright_cyan()
+            theme.name.bright_red()
         )
     );
 
 
-    if config.git_prompt.unwrap_or(true) {
+    if theme.show_git && config.git_enabled() {
 
         if let Some(branch) = git::branch() {
 
-            top.push_str(
+            prompt.push_str(
                 &segment(
                     "",
                     &format!("git: {}", branch)
                 )
             );
 
-            top.push('\n');
+            prompt.push('\n');
         }
     }
 
 
-    let user = whoami::username();
+    if theme.show_user {
 
-    let hostname =
-        hostname::get()
-        .unwrap_or_default()
-        .to_string_lossy()
-        .to_string();
+        let user = whoami::username();
+
+        let hostname =
+            hostname::get()
+                .unwrap_or_default()
+                .to_string_lossy()
+                .to_string();
 
 
-    top.push_str(
-        &segment(
-            "◉",
-            &format!(
-                "{}@{}",
-                user,
-                hostname
+        let identity =
+            if theme.show_hostname {
+                format!("{}@{}", user, hostname)
+            } else {
+                user
+            };
+
+
+        prompt.push_str(
+            &segment(
+                "◉",
+                &identity
             )
-        )
-    );
+        );
 
-    top.push('\n');
-
-
-    let directory =
-        env::current_dir()
-        .unwrap()
-        .display()
-        .to_string();
+        prompt.push('\n');
+    }
 
 
-    top.push_str(
-        &segment(
-            "📁",
-            &directory
-        )
-    );
+    if theme.show_directory {
+
+        let directory =
+            env::current_dir()
+                .unwrap()
+                .display()
+                .to_string();
 
 
-    let time =
-        Local::now()
-        .format("%H:%M")
-        .to_string();
+        prompt.push_str(
+            &segment(
+                "📁",
+                &directory
+            )
+        );
+    }
 
 
-    top.push_str(
-        &format!(
-            " {}\n",
-            time.yellow()
-        )
-    );
+    if theme.show_time {
+
+        let time =
+            Local::now()
+                .format("%H:%M")
+                .to_string();
 
 
-    top.push_str(
+        prompt.push_str(
+            &format!(
+                " {}\n",
+                time.yellow()
+            )
+        );
+    }
+
+
+    prompt.push_str(
         &format!(
             "{} ",
-            "╰─❯".bright_cyan()
+            theme.prompt_symbol.bright_red()
         )
     );
 
 
-    top
+    prompt
 }
