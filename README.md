@@ -1,5 +1,5 @@
 <a>
- 
+
 <p align="center">
   <img src="./assets/banner.png" alt="readme banner">
 </p>
@@ -7,51 +7,56 @@
 
 <div align=center>
 <a>
- 
+
 ![Rust](https://img.shields.io/badge/Built%20with-Rust-800000?style=flat-square&logo=rust&logoColor=white)
-![macOS](https://img.shields.io/badge/Target-macOS-8B0000?style=flat-square&logo=apple&logoColor=white)
+![macOS](https://img.shields.io/badge/Primary%20Platform-macOS-8B0000?style=flat-square&logo=apple&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Community-660000?style=flat-square&logo=github&logoColor=white)
+
 </a>
 </div>
- 
+
 <div align=center>
- 
-<a> █████████░░░░░░░░░░░ 45% </a>
+
+<a> █████████████░░░░░░░░ 65% </a>
+
 </div>
 
 # Astra Shell
 
-A modern shell built from the ground up for macOS.
+A modern shell built in Rust for Unix-like systems, with macOS as the primary development platform.
 
 Astra is an interactive command-line environment focused on a clean interface, customization, and a better terminal experience. It combines the power of traditional Unix shells with a modern prompt system, configuration, and extensibility.
 
 >[!WARNING]
-> Astra Shell has not gone through extensive testing yet. <br>
-> Wait until the first working release to start using, use at your own risk.
+> Astra Shell has not gone through extensive testing yet.
+> Wait until the first stable release before using it as your primary shell.
 
-## Table of contents
-- [Features](https://github.com/SYOP200/astra-shell/tree/main#features)
-- [Screenshots](https://github.com/SYOP200/astra-shell/tree/main#screenshots)
-- [Installation](https://github.com/SYOP200/astra-shell/tree/main#installation)
-- [Requirements](https://github.com/SYOP200/astra-shell/tree/main#requirements)
-- [Usage](https://github.com/SYOP200/astra-shell/tree/main#usage)
-- [Themes](https://github.com/SYOP200/astra-shell/tree/main#themes)
-- [Why Astra?](https://github.com/SYOP200/astra-shell/tree/main#why-astra?)
-- [Contributing](https://github.com/SYOP200/astra-shell/tree/main#contributing)
-- [License](https://github.com/SYOP200/astra-shell/tree/main#license)
-- [Status](https://github.com/SYOP200/astra-shell/tree/main#status)
+## Table of Contents
+
+- Features
+- Screenshots
+- Installation
+- Requirements
+- Usage
+- Themes
+- Why Astra?
+- Contributing
+- License
+- Status
+
 ## Features
 
-- Custom interactive shell
-- Fast Rust-based core
-- Powerlevel10k-inspired prompt system
+- Interactive Rust shell
+- Configurable prompt engine
+- Multiple built-in themes
 - Git-aware prompt information
 - Command history
 - Tab completion
-- Custom configuration
-- Theme support
-- Built-in commands
+- Alias support
+- TOML configuration
+- Built-in shell commands
 - Modular architecture
+- Plugin framework (in development)
 
 ## Screenshots
 
@@ -61,156 +66,164 @@ Coming soon.
 
 ### Requirements
 
-- macOS
-- Rust toolchain
+- Rust stable toolchain
+- Cargo
+- A Unix-like operating system (macOS officially tested)
 
-Install Rust if you do not already have it:
+Install Rust:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
+
 Clone Astra:
+
 ```bash
 git clone https://github.com/SYOP200/astra-shell
-cd astra
+cd astra-shell
 ```
+
 Build:
+
 ```bash
 cargo build --release
 ```
+
 Run:
+
 ```bash
 ./target/release/astra
 ```
-### Usage
+
+## Usage
+
 Start Astra:
+
 ```bash
 astra
 ```
+
 Example:
+
+```text
+Crimson
+
+ git: main
+◉ finn@MacBook-Air
+📁 ~/Developer/astra-shell
+14:27
+❯
 ```
-╭─ Astra
-  git: main
- ◉ user@MacBook-Air
- ~/Developer/Astra
-╰─❯
-```
-Astra can execute normal macOS commands:
+
+Astra executes standard system commands:
+
 ```bash
 ls
 cd Projects
 git status
 python3 script.py
 ```
+
 Built-in commands:
-```bash
+
+```text
 cd
 pwd
 clear
+history
 exit
-Configuration
 ```
-Astra uses a configuration file located at:
-```bash
+
+### Configuration
+
+Astra uses:
+
+```text
 ~/.astrarc
 ```
+
 Example:
+
 ```toml
-theme = "default"
-git_prompt = true
-history_size = 5000
+[general]
+theme = "crimson"
+
+[prompt]
+show_git = true
+show_directory = true
+show_time = true
+
+[aliases]
+ll = "ls -la"
 ```
-Configuration controls how Astra behaves and allows users to customize their terminal experience.
 
-### Themes
+## Themes
 
-Astra supports customizable themes.
+Built-in themes:
 
-Themes are stored in `themes/`
+- crimson
+- midnight
+- matrix
+- obsidian
 
-Example:
-```
-themes/
-   - default.toml
-   - crimson.toml
-   - matrix.toml
-   - midnight.toml
-   - obsidian.toml
-   - cyberpunk.toml (coming soon)
-```
-A theme can control:
+Themes control:
 
 - Prompt layout
-- Icons
-- Colors
-- Display information
-- Architecture
+- Prompt symbol
+- Displayed information
+- Overall appearance
 
-Astra is designed to be modular.
-```
+## Architecture
+
+```text
 src/
-   - main.rs
-   - shell.rs
-   - prompt.rs
-   - parser.rs
-   - executor.rs
-   - builtins.rs
-   - history.rs
-   - config.rs
-   - theme.rs
-   - git.rs
-   - completion.rs
+├── main.rs
+├── shell.rs
+├── prompt.rs
+├── parser.rs
+├── executor.rs
+├── builtins.rs
+├── history.rs
+├── config.rs
+├── theme.rs
+├── git.rs
+├── completion.rs
+└── aliases.rs
 ```
-Each component handles a specific part of the shell, making Astra easier to expand and maintain.
+
+Each module has a focused responsibility to keep the project maintainable.
 
 ## Why Astra?
 
-Existing shells are powerful, but many rely on years of configuration and plugins to create a modern experience.
-
-Astra aims to provide:
-
-- A clean default experience
-- Strong customization
-- Modern terminal features
-- A foundation for future extensions
-
-The goal is not to replace every shell. The goal is to create a shell that feels modern from the first launch.
+Astra is an experimental shell written in Rust with an emphasis on readability, modularity, and customization. The goal is to provide a clean foundation that can evolve while remaining approachable for contributors.
 
 ## Contributing
 
-**Contributions are welcome.**
+Contributions are welcome.
 
-If you want to help improve Astra:
-
-- Fork the repository
-- Create a branch
 ```bash
 git checkout -b feature-name
-```
-- Make your changes
-- Commit your work
-```bash
 git commit -m "Add feature"
 ```
-- Open a pull request
-  
+
+Then open a pull request.
+
 ## License
 
 Astra is licensed under the MIT License.
 
-See [LICENSE](https://github.com/SYOP200/astra-shell/blob/main/LICENSE) for more information.
-
 ## Status
 
-Astra is currently in early development.
+Astra is currently in active development.
 
-The project is focused on building a stable shell foundation while improving the interactive terminal experience.
+The core shell, prompt system, configuration loader, history support, themes, and documentation are in place. Current work focuses on command execution, built-in functionality, testing, and release packaging.
 
 ```mermaid
-pie title Development
-    "Debugging" : 15
-    "Reviewing" : 27
-    "Analyzing vulnerability impact" : 20
-    "Writing code" : 28
-    "Planning" : 10
+pie title Development Focus
+    "Core Shell" : 30
+    "Testing" : 20
+    "Documentation" : 15
+    "Features" : 20
+    "Packaging" : 10
+    "Planning" : 5
 ```
