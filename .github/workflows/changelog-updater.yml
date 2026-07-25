@@ -26,30 +26,34 @@ jobs:
           echo "" >> CHANGELOG.md
         fi
 
-        # Changed endpoint from /releases/latest to /releases and grabbed index [0] to include pre-releases
-        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases 2>/dev/null | jq '.[0]' || true)
+        # Grabs all releases safely without crashing on empty repositories
+        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases 2>/dev/null || true)
 
-        if [ -z "$RELEASE_DATA" ] || [ "$RELEASE_DATA" = "null" ]; then
+        # Parse data safely out of index 0 (the absolute newest release object)
+        if [ -z "$RELEASE_DATA" ] || [ "$RELEASE_DATA" = "[]" ] || [ "$RELEASE_DATA" = "null" ]; then
           RELEASE_NAME="v0.0.0"
           FULL_DESC="Initial repository tracking started."
         else
-          RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.name // .tag_name')
-          FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.body // "No description provided."')
-          IS_PRERELEASE=$(echo "$RELEASE_DATA" | jq -r '.prerelease')
+          # Fixed the bug here by targeting index [0] instead of recursive descent (..)
+          RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.[0].name // .[0].tag_name')
+          FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.[0].body // "No description provided."')
+          IS_PRERELEASE=$(echo "$RELEASE_DATA" | jq -r '.[0].prerelease')
           
           if [ "$RELEASE_NAME" = "null" ] || [ -z "$RELEASE_NAME" ]; then
             RELEASE_NAME="v0.0.0"
             FULL_DESC="Initial repository tracking started."
           fi
 
-          # Optional: Add a visual indicator if it is a pre-release
+          # Appends a clean label to differentiate pre-releases visually
           if [ "$IS_PRERELEASE" = "true" ]; then
             RELEASE_NAME="$RELEASE_NAME (Pre-release)"
           fi
         fi
 
+        # Isolate the first 4 words for the header subtitle
         FOUR_WORDS=$(echo "$FULL_DESC" | tr -d '*#`_-' | awk '{print $1,$2,$3,$4}')
 
+        # Prevent adding duplicates to the file
         if grep -q "## $RELEASE_NAME" CHANGELOG.md; then
           echo "Release $RELEASE_NAME already exists in CHANGELOG.md. Skipping entry creation."
         else
@@ -69,5 +73,5 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add CHANGELOG.md
-        git commit -m "docs: append latest release to changelog [skip ci]"
+        git commit -m "docs: append latest release/pre-release to changelog [skip ci]"
         git push
