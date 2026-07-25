@@ -192,16 +192,13 @@ impl Config {
                 .unwrap_or(PathBuf::from("."))
                 .join(".astrarc");
 
-
         if !path.exists() {
             return Self::default();
         }
 
-
         let contents =
             fs::read_to_string(path)
                 .unwrap_or_default();
-
 
         toml::from_str(&contents)
             .unwrap_or_default()
@@ -210,6 +207,18 @@ impl Config {
 
     pub fn alias(&self, name: &str) -> Option<&String> {
         self.aliases.get(name)
+    }
+
+
+    pub fn theme(&self) -> crate::theme::Theme {
+        crate::theme::load(
+            &self.general.theme
+        )
+    }
+
+
+    pub fn git_enabled(&self) -> bool {
+        self.prompt.show_git
     }
 }
 
