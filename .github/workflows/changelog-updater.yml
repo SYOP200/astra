@@ -1,4 +1,4 @@
-name: Multi-Trigger Changelog Updater
+name: Changelog Updater
 
 on:
   release:
@@ -26,20 +26,25 @@ jobs:
           echo "" >> CHANGELOG.md
         fi
 
-        # We append '|| true' to stop the 404 from crashing the whole workflow run
-        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/latest 2>/dev/null || true)
+        # Changed endpoint from /releases/latest to /releases and grabbed index [0] to include pre-releases
+        RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases 2>/dev/null | jq '.[0]' || true)
 
-        # Parse data safely if it's completely empty or if the API returned an error message
-        if [ -z "$RELEASE_DATA" ] || echo "$RELEASE_DATA" | jq -e '.message' >/dev/null 2>&1; then
+        if [ -z "$RELEASE_DATA" ] || [ "$RELEASE_DATA" = "null" ]; then
           RELEASE_NAME="v0.0.0"
           FULL_DESC="Initial repository tracking started."
         else
           RELEASE_NAME=$(echo "$RELEASE_DATA" | jq -r '.name // .tag_name')
           FULL_DESC=$(echo "$RELEASE_DATA" | jq -r '.body // "No description provided."')
+          IS_PRERELEASE=$(echo "$RELEASE_DATA" | jq -r '.prerelease')
           
           if [ "$RELEASE_NAME" = "null" ] || [ -z "$RELEASE_NAME" ]; then
             RELEASE_NAME="v0.0.0"
             FULL_DESC="Initial repository tracking started."
+          fi
+
+          # Optional: Add a visual indicator if it is a pre-release
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            RELEASE_NAME="$RELEASE_NAME (Pre-release)"
           fi
         fi
 
@@ -62,7 +67,7 @@ jobs:
       if: env.CHANGES_MADE == 'true'
       run: |
         git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add CHANGELOG.md
         git commit -m "docs: append latest release to changelog [skip ci]"
         git push
