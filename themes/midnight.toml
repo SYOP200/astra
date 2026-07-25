@@ -1,0 +1,27 @@
+name = "Midnight"
+
+layout = "modern"
+
+prompt_symbol = "❯"
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+
+primary = "#4A90E2"
+secondary = "#2D5C88"
+accent = "#7FB3FF"
+
+background = "#090B10"
+foreground = "#ECECEC"
+
+directory = "#87CEEB"
+git = "#4A90E2"
+time = "#AAAAAA"
+
+success = "#66BB66"
+error = "#E05D5D"
+
+separator = "│"
