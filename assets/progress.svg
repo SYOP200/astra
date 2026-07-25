@@ -2,14 +2,52 @@
   <!-- Background terminal box -->
   <rect width="450" height="40" fill="#000000" rx="4" stroke="#333333" stroke-width="2"/>
   
-  <!-- Animated Progress Bar (45%) with safe inline animation -->
-  <text x="15" y="25" fill="#00ff00" font-family="Courier New, Courier, monospace" font-size="16" font-weight="bold">
-    [█████████
+  <!-- Grouped 45% Completed Section (Pulsing Animation) -->
+  <g fill="#00ff00">
     <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite" />
-  </text>
-  
-  <!-- Static Remaining Space (55%) -->
-  <text x="105" y="25" fill="#333333" font-family="Courier New, Courier, monospace" font-size="16" font-weight="bold">
-    ░░░░░░░░░░░] <tspan fill="#00ff00">45%</tspan>
-  </text>
+    <!-- Brackets and Filled Blocks (9 blocks for 45%) -->
+    <rect x="15" y="12" width="4" height="16" /> <!-- Left Bracket [ -->
+    <rect x="15" y="12" width="10" height="3" />
+    <rect x="15" y="25" width="10" height="3" />
+    
+    <rect x="33" y="12" width="10" height="16" /> <!-- Block 1 -->
+    <rect x="47" y="12" width="10" height="16" /> <!-- Block 2 -->
+    <rect x="61" y="12" width="10" height="16" /> <!-- Block 3 -->
+    <rect x="75" y="12" width="10" height="16" /> <!-- Block 4 -->
+    <rect x="89" y="12" width="10" height="16" /> <!-- Block 5 -->
+    <rect x="103" y="12" width="10" height="16" /> <!-- Block 6 -->
+    <rect x="117" y="12" width="10" height="16" /> <!-- Block 7 -->
+    <rect x="131" y="12" width="10" height="16" /> <!-- Block 8 -->
+    <rect x="145" y="12" width="10" height="16" /> <!-- Block 9 -->
+  </g>
+
+  <!-- Static 55% Remaining Section (Shaded Blocks) -->
+  <g fill="#223322" stroke="#334433" stroke-width="1">
+    <rect x="159" y="12" width="10" height="16" /> <!-- Empty 1 -->
+    <rect x="173" y="12" width="10" height="16" /> <!-- Empty 2 -->
+    <rect x="187" y="12" width="10" height="16" /> <!-- Empty 3 -->
+    <rect x="201" y="12" width="10" height="16" /> <!-- Empty 4 -->
+    <rect x="215" y="12" width="10" height="16" /> <!-- Empty 5 -->
+    <rect x="229" y="12" width="10" height="16" /> <!-- Empty 6 -->
+    <rect x="243" y="12" width="10" height="16" /> <!-- Empty 7 -->
+    <rect x="257" y="12" width="10" height="16" /> <!-- Empty 8 -->
+    <rect x="271" y="12" width="10" height="16" /> <!-- Empty 9 -->
+    <rect x="285" y="12" width="10" height="16" /> <!-- Empty 10 -->
+    <rect x="299" y="12" width="10" height="16" /> <!-- Empty 11 -->
+    
+    <!-- Right Bracket ] -->
+    <rect x="315" y="12" width="4" height="16" fill="#00ff00" stroke="none" />
+    <rect x="309" y="12" width="10" height="3" fill="#00ff00" stroke="none" />
+    <rect x="309" y="25" width="10" height="3" fill="#00ff00" stroke="none" />
+  </g>
+
+  <!-- 45% Text Graphic drawn as paths -->
+  <g fill="#00ff00" transform="translate(340, 12)">
+    <!-- Number 4 -->
+    <path d="M0,0 h3 v6 h4 v-6 h3 v9 h-3 v4 h-3 v-4 h-4 z M3,3 v3 h1 v-3 z"/>
+    <!-- Number 5 -->
+    <path d="M14,0 h9 v3 h-6 v3 h6 v7 h-9 v-3 h6 v-1 h-6 z"/>
+    <!-- Percent Sign % -->
+    <path d="M27,0 h3 v3 h-3 z M33,0 l-6,13 h-2 l6,-13 z M31,10 h3 v3 h-3 z" />
+  </g>
 </svg>
