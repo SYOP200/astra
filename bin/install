@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+echo "Building Astra..."
+echo "Loading packages"
+echo "Building dependencies"
+
+cargo build --release
+
+INSTALL_DIR="/usr/local/bin"
+
+if [ ! -w "$INSTALL_DIR" ]; then
+    echo "Installing with sudo..."
+    sudo cp target/release/astra "$INSTALL_DIR/astra"
+else
+    cp target/release/astra "$INSTALL_DIR/astra"
+fi
+
+echo "Running Astra..."
+
+chmod +x "$INSTALL_DIR/astra"
+
+echo "Astra installed successfully."
+
+echo "Run:"
+echo "  astra"
