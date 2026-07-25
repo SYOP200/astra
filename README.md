@@ -183,3 +183,11 @@ See [LICENSE](https://github.com/SYOP200/astra-shell/blob/main/LICENSE) for more
 Astra is currently in early development.
 
 The project is focused on building a stable shell foundation while improving the interactive terminal experience.
+
+```mermaid
+pie title Development
+    "Debugging" : 15
+    "Reviewing" : 27
+    "Analyzing vulnerability impact" : 20
+    "Writing code" : 38
+```
