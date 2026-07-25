@@ -1,0 +1,27 @@
+name = "Obsidian"
+
+layout = "minimal"
+
+prompt_symbol = "›"
+
+show_user = false
+show_hostname = false
+show_directory = true
+show_git = true
+show_time = false
+
+primary = "#E0E0E0"
+secondary = "#AAAAAA"
+accent = "#FFFFFF"
+
+background = "#0A0A0A"
+foreground = "#EAEAEA"
+
+directory = "#FFFFFF"
+git = "#BBBBBB"
+time = "#888888"
+
+success = "#FFFFFF"
+error = "#BBBBBB"
+
+separator = "·"
