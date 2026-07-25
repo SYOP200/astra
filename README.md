@@ -1,4 +1,10 @@
 ![readme banner](</assets/banner.png>)
+<div align=center>
+ 
+![Rust](https://img.shields.io/badge/Built%20with-Rust-800000?style=flat-square&logo=rust&logoColor=white)
+![macOS](https://img.shields.io/badge/Target-macOS-8B0000?style=flat-square&logo=apple&logoColor=white)
+![Open Source](https://img.shields.io/badge/Open%20Source-Community-660000?style=flat-square&logo=github&logoColor=white)
+</div>
 
 # Astra Shell
 
