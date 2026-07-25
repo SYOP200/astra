@@ -23,7 +23,6 @@ impl Default for Config {
 }
 
 impl Config {
-
     pub fn theme(&self) -> Theme {
         Theme::load(
             self.theme
@@ -31,24 +30,27 @@ impl Config {
                 .unwrap_or("default")
         )
     }
+
+    pub fn history_size(&self) -> usize {
+        self.history_size.unwrap_or(5000)
+    }
+
+    pub fn git_enabled(&self) -> bool {
+        self.git_prompt.unwrap_or(true)
+    }
 }
 
 pub fn load() -> Config {
-
     let mut path = home_dir().unwrap();
 
     path.push(".astrarc");
-
 
     if !path.exists() {
         return Config::default();
     }
 
-
-    let content =
-        fs::read_to_string(path)
+    let content = fs::read_to_string(path)
         .unwrap_or_default();
-
 
     toml::from_str(&content)
         .unwrap_or_default()
