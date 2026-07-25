@@ -1,0 +1,54 @@
+name: Automated Changelog Updater
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: 'Release Name (e.g., v1.2.0)'
+        required: true
+        type: string
+      four_word_summary:
+        description: '4-word feature description'
+        required: true
+        type: string
+      full_description:
+        description: 'Full description and details of what changed'
+        required: true
+        type: string
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    - name: Prepend changes to CHANGELOG.md
+      run: |
+        # Create changelog file if it does not exist
+        touch CHANGELOG.md
+
+        # Format the new entry into a temporary file
+        cat << 'EOF' > new_entry.txt
+        ## ${{ inputs.release_name }} - ${{ inputs.four_word_summary }}
+
+        ${{ inputs.full_description }}
+
+        ---
+
+        EOF
+
+        # Append old logs below the new entry
+        cat CHANGELOG.md >> new_entry.txt
+        mv new_entry.txt CHANGELOG.md
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        git add CHANGELOG.md
+        git commit -m "docs: update CHANGELOG.md for ${{ inputs.release_name }} [skip ci]" || echo "No changes"
+        git push
