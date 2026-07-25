@@ -4,6 +4,9 @@ A modern shell built from the ground up for macOS.
 
 Astra is an interactive command-line environment focused on a clean interface, customization, and a better terminal experience. It combines the power of traditional Unix shells with a modern prompt system, configuration, and extensibility.
 
+>[!WARNING]
+> Astra Shell has not gone through extensive testing yet. <br>
+> Wait until the first working release to start using, use at your own risk.
 ## Features
 
 - Custom interactive shell
