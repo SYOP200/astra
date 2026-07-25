@@ -1,4 +1,5 @@
-![readme banner](</assets/banner.png>)
+<a> ![readme banner](</assets/banner.png>) </a>
+
 <div align=center>
  
 ![Rust](https://img.shields.io/badge/Built%20with-Rust-800000?style=flat-square&logo=rust&logoColor=white)
