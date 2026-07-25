@@ -13,3 +13,9 @@ Added:
 - Prompt system
 - History support
 - Git integration
+
+## v0.0.0 - Initial repository tracking started.
+
+Initial repository tracking started.
+
+---
