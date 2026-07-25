@@ -158,7 +158,7 @@ If you want to help improve Astra:
 
 Astra is licensed under the MIT License.
 
-See [LICENSE](https://SYOP200/astra/LICENSE) for more information.
+See [LICENSE](https://github.com/SYOP200/astra-shell/blob/main/LICENSE) for more information.
 
 ## Status
 
