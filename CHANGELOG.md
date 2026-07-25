@@ -1,3 +1,9 @@
+## astra-0.1.0 - Init
+
+created changelog-updaer.yml
+
+---
+
 # Changelog
 
 ## 0.1.0
