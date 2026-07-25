@@ -157,10 +157,14 @@ If you want to help improve Astra:
 
 - Fork the repository
 - Create a branch
-- git checkout -b feature-name
+```bash
+git checkout -b feature-name
+```
 - Make your changes
 - Commit your work
-- git commit -m "Add feature"
+```bash
+git commit -m "Add feature"
+```
 - Open a pull request
   
 ## License
