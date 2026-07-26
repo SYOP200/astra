@@ -27,6 +27,7 @@ A modern shell built in Rust for Unix-like systems, with macOS as the primary de
 
 Astra is an interactive command-line environment focused on a clean interface, customization, and a better terminal experience. It combines the power of traditional Unix shells with a modern prompt system, configuration, and extensibility.
 
+Check out our documentation [here!](https://github.com/astra-shell/astra-shell)
 >[!WARNING]
 > Astra Shell has not gone through extensive testing yet.
 > Wait until the first stable release before using it as your primary shell.
