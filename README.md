@@ -58,6 +58,7 @@ Check out our documentation [here!](https://github.com/astra-shell/astra-shell)
 - Built-in shell commands
 - Modular architecture
 - Plugin framework (in development)
+- Optional built in AI plugin
 
 ## Screenshots
 
