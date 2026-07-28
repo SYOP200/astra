@@ -195,6 +195,13 @@ src/
 
 Each module has a focused responsibility to keep the project maintainable.
 
+## Supported Languages:
+- English
+- Deutsch
+- español
+- 简体中文
+- français
+  
 ## Why Astra?
 
 Astra is an experimental shell written in Rust with an emphasis on readability, modularity, and customization. The goal is to provide a clean foundation that can evolve while remaining approachable for contributors.
