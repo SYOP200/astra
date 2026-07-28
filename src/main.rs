@@ -1,32 +1,18 @@
-mod shell;
-mod prompt;
+mod ast;
+mod lexer;
 mod parser;
 mod executor;
+mod resolver;
+
+mod shell;
+mod prompt;
 mod builtins;
 mod history;
 mod config;
 mod theme;
 mod git;
 mod completion;
-mod aliases;
-mod ast;
-mod lexer;
 
 fn main() {
-
-    let args: Vec<String> =
-        std::env::args().collect();
-
-
-    if args.contains(&"--version".to_string()) {
-        println!(
-            "astra {}",
-            env!("CARGO_PKG_VERSION")
-        );
-
-        return;
-    }
-
-
     shell::start();
 }
