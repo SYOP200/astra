@@ -201,6 +201,9 @@ Each module has a focused responsibility to keep the project maintainable.
 - español
 - 简体中文
 - français
+- 日本語
+
+These languages were translated automatically by Translate.js If there are any spelling errors, report them.
   
 ## Why Astra?
 
@@ -226,13 +229,3 @@ Astra is licensed under the MIT License.
 Astra is currently in active development.
 
 The core shell, prompt system, configuration loader, history support, themes, and documentation are in place. Current work focuses on command execution, built-in functionality, testing, and release packaging.
-
-```mermaid
-pie title Development Focus
-    "Core Shell" : 30
-    "Testing" : 20
-    "Documentation" : 15
-    "Features" : 20
-    "Packaging" : 10
-    "Planning" : 5
-```
