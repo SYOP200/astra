@@ -9,6 +9,8 @@ mod theme;
 mod git;
 mod completion;
 mod aliases;
+mod ast;
+mod lexer;
 
 fn main() {
 
