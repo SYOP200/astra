@@ -20,14 +20,13 @@ pub fn start() {
 
     readline.set_helper(Some(AstraCompleter::new()));
 
-    history::load(&mut readline);
+    // Load history
+    history::load(&mut readline, &config);
 
     loop {
         let prompt = prompt::render(&config);
 
-        let input = readline.readline(&prompt);
-
-        match input {
+        match readline.readline(&prompt) {
             Ok(command) => {
                 let command = command.trim();
 
@@ -37,13 +36,13 @@ pub fn start() {
 
                 let _ = readline.add_history_entry(command);
 
-                // Step 1: Tokenize
+                // Tokenize
                 let tokens = lexer::tokenize(command);
 
-                // Step 2: Parse
+                // Parse
                 let ast = parser::parse(&tokens);
 
-                // Step 3: Execute
+                // Execute
                 executor::execute(ast, &config);
             }
 
@@ -54,5 +53,6 @@ pub fn start() {
         }
     }
 
-    history::save(&mut readline);
+    // Save history
+    history::save(&mut readline, &config);
 }
