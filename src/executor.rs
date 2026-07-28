@@ -5,20 +5,26 @@ use crate::{
     ast::{AstNode, Command, Redirect},
     builtins,
     config::Config,
+    resolver,
 };
 
 pub fn execute(node: AstNode, config: &Config) -> i32 {
     match node {
         AstNode::Empty => 0,
 
-        AstNode::Command(cmd) => execute_command(cmd, config),
-
-        AstNode::Redirect { command, redirects } => {
-            execute_redirect(command, redirects, config)
+        AstNode::Command(command) => {
+            execute_command(command, config)
         }
 
         AstNode::Pipe(commands) => {
             execute_pipe(commands, config)
+        }
+
+        AstNode::Redirect {
+            command,
+            redirects,
+        } => {
+            execute_redirect(command, redirects, config)
         }
 
         AstNode::And(left, right) => {
@@ -48,11 +54,27 @@ fn execute_command(command: Command, config: &Config) -> i32 {
         return 0;
     }
 
-    if let Some(code) = builtins::execute(&command.program, &command.args, config) {
-        return code;
+    // Built-in commands
+    if let Some(status) =
+        builtins::execute(&command.program, &command.args, config)
+    {
+        return status;
     }
 
-    let mut process = ProcessCommand::new(&command.program);
+    // Resolve executable
+    let executable =
+        match resolver::resolve(&command.program) {
+            Some(path) => path,
+            None => {
+                eprintln!(
+                    "astra: command not found: {}",
+                    command.program
+                );
+                return 127;
+            }
+        };
+
+    let mut process = ProcessCommand::new(executable);
 
     process.args(&command.args);
 
@@ -60,7 +82,7 @@ fn execute_command(command: Command, config: &Config) -> i32 {
         Ok(status) => status.code().unwrap_or(1),
 
         Err(error) => {
-            eprintln!("astra: {}: {}", command.program, error);
+            eprintln!("astra: {}", error);
             1
         }
     }
@@ -71,7 +93,19 @@ fn execute_redirect(
     redirects: Vec<Redirect>,
     _config: &Config,
 ) -> i32 {
-    let mut process = ProcessCommand::new(&command.program);
+    let executable =
+        match resolver::resolve(&command.program) {
+            Some(path) => path,
+            None => {
+                eprintln!(
+                    "astra: command not found: {}",
+                    command.program
+                );
+                return 127;
+            }
+        };
+
+    let mut process = ProcessCommand::new(executable);
 
     process.args(&command.args);
 
@@ -111,13 +145,16 @@ fn execute_redirect(
         Ok(status) => status.code().unwrap_or(1),
 
         Err(error) => {
-            eprintln!("astra: {}: {}", command.program, error);
+            eprintln!("astra: {}", error);
             1
         }
     }
 }
 
-fn execute_pipe(commands: Vec<Command>, config: &Config) -> i32 {
+fn execute_pipe(
+    commands: Vec<Command>,
+    config: &Config,
+) -> i32 {
     if commands.is_empty() {
         return 0;
     }
@@ -126,6 +163,7 @@ fn execute_pipe(commands: Vec<Command>, config: &Config) -> i32 {
         return execute_command(commands[0].clone(), config);
     }
 
-    eprintln!("astra: pipe execution is not yet implemented");
+    // Placeholder until full Unix pipe implementation.
+    eprintln!("astra: pipes are not implemented yet");
     1
 }
