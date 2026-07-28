@@ -1,12 +1,12 @@
-use rustyline::Editor;
 use rustyline::history::DefaultHistory;
+use rustyline::Editor;
 
 use crate::{
-    aliases::AliasManager,
     completion::AstraCompleter,
     config,
     executor,
     history,
+    lexer,
     parser,
     prompt,
 };
@@ -14,63 +14,38 @@ use crate::{
 pub fn start() {
     let config = config::load();
 
-    let aliases =
-        AliasManager::new(
-            config.aliases.clone()
-        );
-
     let mut readline =
         Editor::<AstraCompleter, DefaultHistory>::new()
             .expect("failed to initialize terminal");
 
-
-    readline.set_helper(
-        Some(AstraCompleter::new())
-    );
-
+    readline.set_helper(Some(AstraCompleter::new()));
 
     history::load(&mut readline);
 
-
     loop {
-        let prompt =
-            prompt::render(&config);
+        let prompt = prompt::render(&config);
 
-
-        let input =
-            readline.readline(&prompt);
-
+        let input = readline.readline(&prompt);
 
         match input {
-
             Ok(command) => {
+                let command = command.trim();
 
-                if command.trim().is_empty() {
+                if command.is_empty() {
                     continue;
                 }
 
+                let _ = readline.add_history_entry(command);
 
-                let _ =
-                    readline.add_history_entry(
-                        command.as_str()
-                    );
+                // Step 1: Tokenize
+                let tokens = lexer::tokenize(command);
 
+                // Step 2: Parse
+                let ast = parser::parse(&tokens);
 
-                let expanded =
-                    aliases.expand(
-                        &command
-                    );
-
-
-                let args =
-                    parser::parse(
-                        &expanded
-                    );
-
-
-                executor::execute(args);
+                // Step 3: Execute
+                executor::execute(ast, &config);
             }
-
 
             Err(_) => {
                 println!();
@@ -78,7 +53,6 @@ pub fn start() {
             }
         }
     }
-
 
     history::save(&mut readline);
 }
