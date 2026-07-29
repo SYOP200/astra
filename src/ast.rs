@@ -1,72 +1,108 @@
-use std::path::PathBuf;
+//! src/ast.rs
+//!
+//! Abstract Syntax Tree (AST) for Astra Shell.
+//!
+//! The lexer converts source text into tokens.
+//! The parser converts tokens into this AST.
+//! The executor consumes this AST.
+//!
+//! This module intentionally contains no parsing logic.
 
-/// A parsed shell command.
-///
-/// Example:
-/// echo hello world
-#[derive(Debug, Clone)]
+/// Byte span within the original input.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct Span {
+    pub start: usize,
+    pub end: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Program {
+    pub statements: Vec<Statement>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum Statement {
+    Pipeline(Pipeline),
+    Sequence(Vec<Statement>),
+    And(Box<Statement>, Box<Statement>),
+    Or(Box<Statement>, Box<Statement>),
+    Subshell(Box<Program>),
+}
+
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Pipeline {
+    pub commands: Vec<Command>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub struct Command {
-    /// Executable name.
-    pub program: String,
-
-    /// Arguments passed to the executable.
-    pub args: Vec<String>,
+    pub executable: Argument,
+    pub arguments: Vec<Argument>,
+    pub redirects: Vec<Redirect>,
+    pub assignments: Vec<Assignment>,
+    pub span: Span,
 }
 
-/// Supported output/input redirections.
-#[derive(Debug, Clone)]
-pub enum Redirect {
-    /// >
-    Stdout(PathBuf),
+#[derive(Debug, Clone, PartialEq)]
+pub enum Argument {
+    /// ls
+    Literal(String),
 
-    /// >>
-    AppendStdout(PathBuf),
+    /// "$HOME"
+    Quoted(String),
 
-    /// <
-    Stdin(PathBuf),
+    /// $HOME
+    Variable(String),
 
-    /// 2>
-    Stderr(PathBuf),
+    /// $(pwd)
+    CommandSubstitution(Box<Program>),
 }
 
-/// A complete shell expression.
-///
-/// This becomes the output of the parser.
-#[derive(Debug, Clone)]
-pub enum AstNode {
-    /// Single command.
-    ///
-    /// ls -la
-    Command(Command),
+#[derive(Debug, Clone, PartialEq)]
+pub struct Redirect {
+    pub kind: RedirectKind,
+    pub target: String,
+}
 
-    /// cmd1 | cmd2
-    Pipe(Vec<Command>),
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RedirectKind {
+    Input,
+    Output,
+    Append,
+    Error,
+    ErrorAppend,
+}
 
-    /// cmd > file
-    Redirect {
-        command: Command,
-        redirects: Vec<Redirect>,
-    },
-
-    /// cmd1 && cmd2
-    And(Box<AstNode>, Box<AstNode>),
-
-    /// cmd1 || cmd2
-    Or(Box<AstNode>, Box<AstNode>),
-
-    /// Empty input.
-    Empty,
+#[derive(Debug, Clone, PartialEq)]
+pub struct Assignment {
+    pub name: String,
+    pub value: String,
 }
 
 impl Command {
-    pub fn new(program: String) -> Self {
+    pub fn new(executable: impl Into<String>) -> Self {
         Self {
-            program,
-            args: Vec::new(),
+            executable: Argument::Literal(executable.into()),
+            arguments: Vec::new(),
+            redirects: Vec::new(),
+            assignments: Vec::new(),
+            span: Span::default(),
         }
     }
+}
 
-    pub fn push_arg(&mut self, arg: String) {
-        self.args.push(arg);
+impl Pipeline {
+    pub fn new() -> Self {
+        Self {
+            commands: Vec::new(),
+        }
+    }
+}
+
+impl Program {
+    pub fn new() -> Self {
+        Self {
+            statements: Vec::new(),
+        }
     }
 }
