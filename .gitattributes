@@ -1,1 +1,3 @@
 *.toml linguist-detectable
+*.yml linguist-detectable
+*.json linguist-detectable
