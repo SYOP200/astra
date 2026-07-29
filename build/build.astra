@@ -1,0 +1,75 @@
+// Astra build configuration
+
+build {
+    name = "astra-project"
+
+    source = "src"
+
+    output = "target"
+
+    mode = "debug"
+}
+
+
+// Build targets
+
+target "debug" {
+    optimization = false
+
+    debug_symbols = true
+
+    output = "target/debug"
+}
+
+
+target "release" {
+    optimization = true
+
+    debug_symbols = false
+
+    output = "target/release"
+}
+
+
+// Compiler configuration
+
+compiler {
+    command = "astra"
+
+    flags = [
+        "--warnings",
+        "--native"
+    ]
+}
+
+
+// Build steps
+
+task "clean" {
+    command = "remove target"
+}
+
+
+task "compile" {
+    command = "astra compile src/main.astra"
+}
+
+
+task "run" {
+    depends = [
+        "compile"
+    ]
+
+    command = "./target/debug/main"
+}
+
+
+// Default build
+
+default {
+    target = "debug"
+
+    tasks = [
+        "compile"
+    ]
+}
