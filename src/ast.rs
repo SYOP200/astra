@@ -1,108 +1,152 @@
-//! src/ast.rs
-//!
-//! Abstract Syntax Tree (AST) for Astra Shell.
-//!
-//! The lexer converts source text into tokens.
-//! The parser converts tokens into this AST.
-//! The executor consumes this AST.
-//!
-//! This module intentionally contains no parsing logic.
+use std::path::PathBuf;
 
-/// Byte span within the original input.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct Span {
-    pub start: usize,
-    pub end: usize,
+/// A parsed shell command.
+///
+/// Example:
+/// ```text
+/// echo hello world
+/// ```
+#[derive(Debug, Clone)]
+pub struct Command {
+    /// Executable name.
+    pub program: String,
+
+    /// Arguments passed to the executable.
+    pub args: Vec<String>,
+
+    /// Input/output redirections attached to this command.
+    pub redirects: Vec<Redirect>,
 }
 
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct Program {
-    pub statements: Vec<Statement>,
+/// Supported input/output redirections.
+#[derive(Debug, Clone)]
+pub enum Redirect {
+    /// >
+    Stdout(PathBuf),
+
+    /// >>
+    AppendStdout(PathBuf),
+
+    /// <
+    Stdin(PathBuf),
+
+    /// 2>
+    Stderr(PathBuf),
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum Statement {
-    Pipeline(Pipeline),
-    Sequence(Vec<Statement>),
-    And(Box<Statement>, Box<Statement>),
-    Or(Box<Statement>, Box<Statement>),
-    Subshell(Box<Program>),
-}
-
-#[derive(Debug, Clone, PartialEq, Default)]
+/// A pipeline of commands.
+///
+/// Example:
+/// ```text
+/// ls -la | grep rs | wc -l
+/// ```
+#[derive(Debug, Clone)]
 pub struct Pipeline {
     pub commands: Vec<Command>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct Command {
-    pub executable: Argument,
-    pub arguments: Vec<Argument>,
-    pub redirects: Vec<Redirect>,
-    pub assignments: Vec<Assignment>,
-    pub span: Span,
-}
+/// A complete shell expression.
+///
+/// This is the output of the parser and the input to the executor.
+#[derive(Debug, Clone)]
+pub enum AstNode {
+    /// Single command.
+    ///
+    /// ```text
+    /// ls -la
+    /// ```
+    Command(Command),
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum Argument {
-    /// ls
-    Literal(String),
+    /// Pipeline.
+    ///
+    /// ```text
+    /// ls | grep rs | wc -l
+    /// ```
+    Pipe(Pipeline),
 
-    /// "$HOME"
-    Quoted(String),
+    /// Logical AND.
+    ///
+    /// ```text
+    /// make && ./app
+    /// ```
+    And(Box<AstNode>, Box<AstNode>),
 
-    /// $HOME
-    Variable(String),
+    /// Logical OR.
+    ///
+    /// ```text
+    /// make || echo "Build failed"
+    /// ```
+    Or(Box<AstNode>, Box<AstNode>),
 
-    /// $(pwd)
-    CommandSubstitution(Box<Program>),
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct Redirect {
-    pub kind: RedirectKind,
-    pub target: String,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum RedirectKind {
-    Input,
-    Output,
-    Append,
-    Error,
-    ErrorAppend,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct Assignment {
-    pub name: String,
-    pub value: String,
+    /// Empty input.
+    Empty,
 }
 
 impl Command {
-    pub fn new(executable: impl Into<String>) -> Self {
+    /// Create a new command.
+    pub fn new(program: impl Into<String>) -> Self {
         Self {
-            executable: Argument::Literal(executable.into()),
-            arguments: Vec::new(),
+            program: program.into(),
+            args: Vec::new(),
             redirects: Vec::new(),
-            assignments: Vec::new(),
-            span: Span::default(),
         }
+    }
+
+    /// Append an argument.
+    pub fn push_arg(&mut self, arg: impl Into<String>) {
+        self.args.push(arg.into());
+    }
+
+    /// Append a redirect.
+    pub fn push_redirect(&mut self, redirect: Redirect) {
+        self.redirects.push(redirect);
     }
 }
 
 impl Pipeline {
+    /// Create an empty pipeline.
     pub fn new() -> Self {
         Self {
             commands: Vec::new(),
         }
     }
+
+    /// Add a command to the pipeline.
+    pub fn push(&mut self, command: Command) {
+        self.commands.push(command);
+    }
+
+    /// Returns true if the pipeline contains no commands.
+    pub fn is_empty(&self) -> bool {
+        self.commands.is_empty()
+    }
+
+    /// Number of commands in the pipeline.
+    pub fn len(&self) -> usize {
+        self.commands.len()
+    }
 }
 
-impl Program {
-    pub fn new() -> Self {
-        Self {
-            statements: Vec::new(),
-        }
+impl Redirect {
+    pub fn stdout(path: impl Into<PathBuf>) -> Self {
+        Self::Stdout(path.into())
+    }
+
+    pub fn append_stdout(path: impl Into<PathBuf>) -> Self {
+        Self::AppendStdout(path.into())
+    }
+
+    pub fn stdin(path: impl Into<PathBuf>) -> Self {
+        Self::Stdin(path.into())
+    }
+
+    pub fn stderr(path: impl Into<PathBuf>) -> Self {
+        Self::Stderr(path.into())
+    }
+}
+
+impl Default for Pipeline {
+    fn default() -> Self {
+        Self::new()
     }
 }
