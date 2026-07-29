@@ -1,3 +1,5 @@
 *.toml linguist-detectable
 *.yml linguist-detectable
 *.json linguist-detectable
+*.plist linguist-detectable
+*.txt linguist-detectable
