@@ -41,6 +41,8 @@ Check out our documentation [here!](https://github.com/astra-shell/astra-shell)
 - Requirements
 - Usage
 - Themes
+- Architecture
+- Supported Languages
 - Why Astra?
 - Contributing
 - License
