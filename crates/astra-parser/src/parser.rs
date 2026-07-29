@@ -1,6 +1,6 @@
 use astra_ast::{
-    Block, Function, Identifier, Item, ItemKind, Parameter,
-    Program, Span, Statement,
+    Block, Function, Identifier, Item, ItemKind, Parameter, Program,
+    PrimitiveType, Span, Type, TypeKind,
 };
 
 use astra_lexer::{Token, TokenKind};
@@ -21,12 +21,12 @@ impl Parser {
         }
     }
 
-    /// Parses an entire Astra program.
+    /// Parse an entire Astra source file.
     pub fn parse(&mut self) -> Result<Program, ParserError> {
         let span = self
             .tokens
             .first()
-            .map(|t| t.span)
+            .map(|token| token.span)
             .unwrap_or_default();
 
         let mut program = Program::new(span);
@@ -49,12 +49,15 @@ impl Parser {
 
     fn parse_function(&mut self) -> Result<Function, ParserError> {
         let name = match &self.current().kind {
-            TokenKind::Identifier(name) => {
-                let span = self.current().span;
+            TokenKind::Identifier(value) => {
+                let identifier = Identifier::new(
+                    value.clone(),
+                    self.current().span,
+                );
 
                 self.advance();
 
-                Identifier::new(name.clone(), span)
+                identifier
             }
 
             _ => {
@@ -77,12 +80,18 @@ impl Parser {
             "expected ')' after parameters",
         )?;
 
+        let return_type = if self.matches(&[TokenKind::Arrow]) {
+            Some(self.parse_type()?)
+        } else {
+            None
+        };
+
         let body = self.parse_block()?;
 
         Ok(Function {
             name,
             parameters,
-            return_type: None,
+            return_type,
             body,
         })
     }
@@ -97,11 +106,14 @@ impl Parser {
         {
             let name = match &self.current().kind {
                 TokenKind::Identifier(value) => {
-                    let span = self.current().span;
+                    let identifier = Identifier::new(
+                        value.clone(),
+                        self.current().span,
+                    );
 
                     self.advance();
 
-                    Identifier::new(value.clone(), span)
+                    identifier
                 }
 
                 _ => {
@@ -117,16 +129,11 @@ impl Parser {
                 "expected ':' after parameter name",
             )?;
 
-            // Temporary type placeholder.
-            // Type parsing is ASTRA-004B.
-            self.advance();
+            let ty = self.parse_type()?;
 
             parameters.push(Parameter {
                 name,
-                ty: astra_ast::Type::new(
-                    astra_ast::TypeKind::Unknown,
-                    self.previous().span,
-                ),
+                ty,
                 span: self.previous().span,
             });
 
@@ -138,6 +145,61 @@ impl Parser {
         Ok(parameters)
     }
 
+    fn parse_type(&mut self) -> Result<Type, ParserError> {
+        let token = self.current().clone();
+
+        let kind = match &token.kind {
+            TokenKind::TypeInt => {
+                TypeKind::Primitive(PrimitiveType::Int)
+            }
+
+            TokenKind::TypeFloat => {
+                TypeKind::Primitive(PrimitiveType::Float)
+            }
+
+            TokenKind::TypeBool => {
+                TypeKind::Primitive(PrimitiveType::Bool)
+            }
+
+            TokenKind::TypeString => {
+                TypeKind::Primitive(PrimitiveType::String)
+            }
+
+            TokenKind::TypeChar => {
+                TypeKind::Primitive(PrimitiveType::Char)
+            }
+
+            TokenKind::TypeVoid => {
+                TypeKind::Primitive(PrimitiveType::Void)
+            }
+
+            TokenKind::Identifier(name) => {
+                self.advance();
+
+                return Ok(Type::new(
+                    TypeKind::Named(
+                        Identifier::new(
+                            name.clone(),
+                            token.span,
+                        ),
+                    ),
+                    token.span,
+                ));
+            }
+
+            _ => {
+                return Err(ParserError::new(
+                    "expected type",
+                    token.span,
+                ));
+            }
+        };
+
+        self.advance();
+
+        Ok(Type::new(kind, token.span))
+    }
+
     fn parse_block(&mut self) -> Result<Block, ParserError> {
         self.expect(
             TokenKind::LeftBrace,
@@ -146,12 +208,12 @@ impl Parser {
 
         let span = self.previous().span;
 
-        let mut block = Block::new(span);
+        let block = Block::new(span);
 
         while !self.check(&TokenKind::RightBrace)
             && !self.is_at_end()
         {
-            // Statements are ASTRA-004C.
+            // Statement parsing will be added in ASTRA-004C.
             self.advance();
         }
 
