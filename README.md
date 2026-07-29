@@ -204,7 +204,7 @@ Each module has a focused responsibility to keep the project maintainable.
 - français
 - 日本語
 
-These languages were translated automatically by Translate.js If there are any spelling errors, report them.
+These languages were translated automatically by AI using Translate.js If there are any spelling errors, report them.
   
 ## Why Astra?
 
