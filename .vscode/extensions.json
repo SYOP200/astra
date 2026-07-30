@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "astra-lang.astra",
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb"
+    ]
+}
