@@ -3,3 +3,35 @@
 *.json linguist-detectable
 *.plist linguist-detectable
 *.txt linguist-detectable
+
+# Normalize line endings
+* text=auto eol=lf
+
+# Rust
+*.rs text
+
+# Markdown
+*.md text
+
+# TOML
+*.toml text
+
+# JSON
+*.json text
+
+# YAML
+*.yml text
+*.yaml text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.xz binary
+*.7z binary
