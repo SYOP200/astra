@@ -1,0 +1,20 @@
+# Maximum allowed function size.
+too-many-arguments-threshold = 7
+
+# Maximum cognitive complexity.
+cognitive-complexity-threshold = 25
+
+# Maximum enum variant size difference.
+enum-variant-size-threshold = 200
+
+# Prefer readability over extreme compactness.
+single-char-binding-names-threshold = 3
+
+# Discourage excessive bool parameters.
+max-fn-params-bools = 2
+
+# Warn about large stack allocations.
+stack-size-threshold = 1024
+
+# Discourage very large types by value.
+pass-by-value-size-limit = 256
