@@ -1,8 +1,10 @@
 *.toml linguist-detectable
-*.yml linguist-detectable
+*.yaml linguist-detectable
 *.json linguist-detectable
 *.plist linguist-detectable
 *.txt linguist-detectable
+*.astra linguist-detectable
+*.md linguist-detectable
 
 # Normalize line endings
 * text=auto eol=lf
