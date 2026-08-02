@@ -1,5 +1,4 @@
 use crate::ast::{AstNode, Command, Redirect};
-use crate::ast::*;
 use crate::lexer::Token;
 
 pub fn parse(tokens: &[Token]) -> AstNode {
