@@ -19,9 +19,20 @@ jobs:
         with:
           stable: true
 
-      - name: Install from local Homebrew formula
+      - name: Create temporary tap and install formula
+        env:
+          TAP_NAME: "$GITHUB_ACTOR/astra-shell-tap"
         run: |
-          brew install --build-from-source ./astra-shell.rb
+          # Create a temporary tap for this run
+          brew tap-new "$TAP_NAME"
+
+          # Copy the local formula into the tap's Formula/ directory
+          TAP_REPO=$(brew --repo "$TAP_NAME")
+          mkdir -p "$TAP_REPO/Formula"
+          cp ./astra-shell.rb "$TAP_REPO/Formula/astra-shell.rb"
+
+          # Install the formula from the tap (builds from source)
+          brew install --build-from-source "$TAP_NAME/astra-shell"
 
       - name: Verify Astra runtime
         run: |
