@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0 - Stable release
+
+Released:
+- First stable Astra shell version
+- Configurable ~/.astrarc support
+- Homebrew packaging formula
+- Modern one-line icon prompt themes
+- `astra theme` subcommands and script execution support
+
 ## 0.1.0
 
 Added:

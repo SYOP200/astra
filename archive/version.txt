@@ -1,2 +1,2 @@
-v.0.4.0 - pre release
+v.1.0.0 - stable release
 BETA

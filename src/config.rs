@@ -33,6 +33,7 @@ pub struct PromptConfig {
     pub show_git: Option<bool>,
     pub show_time: Option<bool>,
     pub symbol: Option<String>,
+    pub separator: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -97,7 +98,7 @@ impl Default for Config {
 impl Default for GeneralConfig {
     fn default() -> Self {
         Self {
-            theme: "crimson".into(),
+            theme: "default".into(),
             startup_message: true,
             update_check: false,
             telemetry: false,
@@ -114,6 +115,7 @@ impl Default for PromptConfig {
             show_git: None,
             show_time: None,
             symbol: None,
+            separator: None,
         }
     }
 }
@@ -165,7 +167,7 @@ impl Default for AppearanceConfig {
     fn default() -> Self {
         Self {
             unicode: true,
-            nerd_fonts: true,
+            nerd_fonts: false,
             animations: true,
             compact: false,
         }
@@ -207,6 +209,9 @@ impl Config {
         }
         if let Some(symbol) = &self.prompt.symbol {
             theme.prompt_symbol = symbol.clone();
+        }
+        if let Some(separator) = &self.prompt.separator {
+            theme.separator = separator.clone();
         }
 
         theme

@@ -29,9 +29,8 @@ A modern shell built in Rust for Unix-like systems, with macOS as the primary de
 Astra is an interactive command-line environment focused on a clean interface, customization, and a better terminal experience. It combines the power of traditional Unix shells with a modern prompt system, configuration, and extensibility.
 
 Check out our documentation [here!](https://github.com/astra-shell/astra-shell)
->[!WARNING]
-> Astra Shell has not gone through extensive testing yet.
-> Wait until the first stable release before using it as your primary shell.
+
+Astra is now prepared for its first stable release and includes a stable CLI, customizable prompt configuration, and Homebrew packaging support.
 
 ## Table of Contents
 
@@ -120,16 +119,10 @@ Start Astra:
 astra
 ```
 
-Example:
+Example prompt layout for maximum compatibility:
 
 ```text
-Crimson
-
- git: main
-◉ finn@MacBook-Air
-📁 ~/Developer/astra-shell
-14:27
-❯
+git main | ~/dev/astra-shell | 14:27 >
 ```
 
 Astra also supports CLI helpers and simple Astra script files:
@@ -137,10 +130,10 @@ Astra also supports CLI helpers and simple Astra script files:
 ```bash
 astra --help
 astra --version
-astra --theme-list
-astra --theme-show
-astra --theme-set dark
-astra --eval "pwd"
+astra theme list
+astra theme show
+astra theme set dark
+astra eval "pwd"
 astra examples/example.astra
 ```
 
@@ -153,7 +146,7 @@ git status
 python3 script.py
 ```
 
-Built-in commands:
+Built-in shell commands available inside Astra:
 
 ```text
 cd
@@ -161,6 +154,12 @@ pwd
 clear
 history
 exit
+help
+version
+about
+theme-list
+theme-show
+theme-set
 ```
 
 ### Configuration
@@ -171,16 +170,54 @@ Astra uses:
 ~/.astrarc
 ```
 
-Example:
+You can copy the example configuration file included in the repository:
+
+```bash
+cp astrarc.example.toml ~/.astrarc
+```
+
+A robust configuration file includes prompt, theme, history, completion, and appearance settings. For maximum compatibility across terminals, keep `nerd_fonts = false` unless your terminal supports Powerline/Nerd Font icons:
 
 ```toml
 [general]
-theme = "crimson"
+theme = "default"
+startup_message = true
+update_check = false
+telemetry = false
 
 [prompt]
-show_git = true
+show_user = true
+show_hostname = true
 show_directory = true
+show_git = true
 show_time = true
+symbol = ">"
+separator = "|"
+
+[history]
+enabled = true
+file = "~/.astra_history"
+size = 10000
+deduplicate = true
+ignore_duplicates = true
+
+[completion]
+enabled = true
+case_sensitive = false
+show_hidden_files = false
+max_results = 20
+
+[behavior]
+confirm_exit = true
+allow_scripts = true
+auto_cd = false
+vi_mode = false
+
+[appearance]
+unicode = true
+nerd_fonts = false
+animations = true
+compact = false
 
 [aliases]
 ll = "ls -la"
@@ -256,6 +293,6 @@ Astra is licensed under the MIT License.
 
 ## Status
 
-Astra is currently in active development.
+Astra is ready for the first stable release as version 1.0.0.
 
-The core shell, prompt system, configuration loader, history support, themes, and documentation are in place. Current work focuses on command execution, built-in functionality, testing, and release packaging.
+The core shell, prompt system, configuration loader, history support, themes, Homebrew packaging, and customizable `~/.astrarc` configuration are in place. Current work focuses on expanding script support, improving compatibility, and growing the theme library.

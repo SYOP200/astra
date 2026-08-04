@@ -1,0 +1,23 @@
+name = "Astra Compact"
+
+layout = "compact"
+
+prompt_symbol = "❯"
+
+show_user = false
+show_hostname = false
+show_directory = true
+show_git = true
+show_time = true
+
+primary = "#E5E9F0"
+secondary = "#A3B4C9"
+accent = "#82AAFF"
+background = "#1F2335"
+foreground = "#D8DEE9"
+directory = "#8FBCBB"
+git = "#88C0D0"
+time = "#B48EAD"
+success = "#A3BE8C"
+error = "#BF616A"
+separator = "│"

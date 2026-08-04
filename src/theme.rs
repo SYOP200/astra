@@ -108,7 +108,8 @@ impl Theme {
 
 pub fn available() -> &'static [&'static str] {
     &[
-        "crimson", "default", "matrix", "midnight", "obsidian", "dark", "light", "minimal",
+        "crimson", "default", "matrix", "midnight", "obsidian", "dark", "light", "compact",
+        "minimal",
     ]
 }
 
@@ -123,6 +124,7 @@ pub fn load(name: &str) -> Theme {
         "obsidian" => include_str!("../themes/obsidian.toml"),
         "light" => include_str!("../themes/light.toml"),
         "dark" => include_str!("../themes/dark.toml"),
+        "compact" => include_str!("../themes/compact.toml"),
         "minimal" => include_str!("../themes/minimal.toml"),
         _ => include_str!("../themes/default.toml"),
     };

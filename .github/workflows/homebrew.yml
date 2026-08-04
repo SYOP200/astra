@@ -26,4 +26,4 @@ jobs:
       - name: Verify Astra runtime
         run: |
           astra --version
-          astra --theme-list
+          astra theme list
