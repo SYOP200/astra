@@ -100,6 +100,8 @@ brew tap astra-shell/homebrew-astra-shell https://github.com/astra-shell/homebre
 brew install --build-from-source astra-shell
 ```
 
+Astra Shell uses `eza` as the default `ls` alias. Homebrew installs `eza` as a dependency automatically.
+
 If you see a tap trust warning, run:
 
 ```bash
@@ -110,6 +112,14 @@ If you want to install from the local formula in this repository instead:
 
 ```bash
 brew install --build-from-source ./astra-shell.rb
+```
+
+### Uninstalling Astra
+
+```bash
+brew uninstall astra-shell
+brew untap astra-shell/homebrew-astra-shell
+rm -f ~/.astrarc
 ```
 
 ## Usage
@@ -177,7 +187,7 @@ You can copy the example configuration file included in the repository:
 cp astrarc.example.toml ~/.astrarc
 ```
 
-A robust configuration file includes prompt, theme, history, completion, and appearance settings. For maximum compatibility across terminals, keep `nerd_fonts = false` unless your terminal supports Powerline/Nerd Font icons:
+A robust configuration file includes prompt, theme, history, completion, plugins, and appearance settings. For maximum compatibility across terminals, keep `nerd_fonts = false` unless your terminal supports Powerline/Nerd Font icons.
 
 ```toml
 [general]
@@ -214,6 +224,10 @@ allow_scripts = true
 auto_cd = false
 vi_mode = false
 
+[plugins]
+enabled = true
+directory = "~/.astra/plugins"
+
 [appearance]
 unicode = true
 nerd_fonts = false
@@ -221,7 +235,9 @@ animations = true
 compact = false
 
 [aliases]
-ll = "ls -la"
+ls = "eza"
+ll = "eza -la"
+g = "git"
 ```
 
 ## Themes
