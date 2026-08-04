@@ -3,3 +3,6 @@
 - matrix
 - midnight
 - obsidian
+- dark
+- light
+- minimal

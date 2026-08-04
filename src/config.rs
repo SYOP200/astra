@@ -1,9 +1,5 @@
 use serde::Deserialize;
-use std::{
-    collections::HashMap,
-    fs,
-    path::PathBuf,
-};
+use std::{collections::HashMap, fs, path::PathBuf};
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(default)]
@@ -30,12 +26,12 @@ pub struct GeneralConfig {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(default)]
 pub struct PromptConfig {
-    pub show_user: bool,
-    pub show_hostname: bool,
-    pub show_directory: bool,
-    pub show_git: bool,
-    pub show_time: bool,
-    pub symbol: String,
+    pub show_user: Option<bool>,
+    pub show_hostname: Option<bool>,
+    pub show_directory: Option<bool>,
+    pub show_git: Option<bool>,
+    pub show_time: Option<bool>,
+    pub symbol: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -82,7 +78,6 @@ pub struct AppearanceConfig {
     pub compact: bool,
 }
 
-
 impl Default for Config {
     fn default() -> Self {
         Self {
@@ -98,7 +93,6 @@ impl Default for Config {
     }
 }
 
-
 impl Default for GeneralConfig {
     fn default() -> Self {
         Self {
@@ -110,20 +104,18 @@ impl Default for GeneralConfig {
     }
 }
 
-
 impl Default for PromptConfig {
     fn default() -> Self {
         Self {
-            show_user: true,
-            show_hostname: true,
-            show_directory: true,
-            show_git: true,
-            show_time: true,
-            symbol: "❯".into(),
+            show_user: None,
+            show_hostname: None,
+            show_directory: None,
+            show_git: None,
+            show_time: None,
+            symbol: None,
         }
     }
 }
-
 
 impl Default for HistoryConfig {
     fn default() -> Self {
@@ -137,7 +129,6 @@ impl Default for HistoryConfig {
     }
 }
 
-
 impl Default for CompletionConfig {
     fn default() -> Self {
         Self {
@@ -148,7 +139,6 @@ impl Default for CompletionConfig {
         }
     }
 }
-
 
 impl Default for BehaviorConfig {
     fn default() -> Self {
@@ -161,7 +151,6 @@ impl Default for BehaviorConfig {
     }
 }
 
-
 impl Default for PluginConfig {
     fn default() -> Self {
         Self {
@@ -170,7 +159,6 @@ impl Default for PluginConfig {
         }
     }
 }
-
 
 impl Default for AppearanceConfig {
     fn default() -> Self {
@@ -183,40 +171,46 @@ impl Default for AppearanceConfig {
     }
 }
 
-
 impl Config {
-
     pub fn load() -> Self {
-        let path =
-            dirs::home_dir()
-                .unwrap_or(PathBuf::from("."))
-                .join(".astrarc");
+        let path = dirs::home_dir()
+            .unwrap_or(PathBuf::from("."))
+            .join(".astrarc");
 
         if !path.exists() {
             return Self::default();
         }
 
-        let contents =
-            fs::read_to_string(path)
-                .unwrap_or_default();
+        let contents = fs::read_to_string(path).unwrap_or_default();
 
-        toml::from_str(&contents)
-            .unwrap_or_default()
+        toml::from_str(&contents).unwrap_or_default()
     }
-
 
     pub fn theme(&self) -> crate::theme::Theme {
-        crate::theme::load(
-            &self.general.theme
-        )
-    }
+        let mut theme = crate::theme::load(&self.general.theme);
 
+        if let Some(show_user) = self.prompt.show_user {
+            theme.show_user = show_user;
+        }
+        if let Some(show_hostname) = self.prompt.show_hostname {
+            theme.show_hostname = show_hostname;
+        }
+        if let Some(show_directory) = self.prompt.show_directory {
+            theme.show_directory = show_directory;
+        }
+        if let Some(show_git) = self.prompt.show_git {
+            theme.show_git = show_git;
+        }
+        if let Some(show_time) = self.prompt.show_time {
+            theme.show_time = show_time;
+        }
+        if let Some(symbol) = &self.prompt.symbol {
+            theme.prompt_symbol = symbol.clone();
+        }
 
-    pub fn git_enabled(&self) -> bool {
-        self.prompt.show_git
+        theme
     }
 }
-
 
 pub fn load() -> Config {
     Config::load()

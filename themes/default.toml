@@ -1,5 +1,7 @@
 name = "Astra Dark"
 
+layout = "power"
+
 prompt_symbol = "❯"
 
 show_user = true
@@ -7,3 +9,15 @@ show_hostname = true
 show_directory = true
 show_git = true
 show_time = true
+
+primary = "#8AB4F8"
+secondary = "#5A6BDC"
+accent = "#C792EA"
+background = "#0E1117"
+foreground = "#E8EAED"
+directory = "#7C9EFF"
+git = "#82CFF3"
+time = "#B0B9C1"
+success = "#7DD47D"
+error = "#F04438"
+separator = "│"

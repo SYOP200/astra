@@ -1,0 +1,23 @@
+name = "Minimal"
+
+layout = "minimal"
+
+prompt_symbol = "›"
+
+show_user = false
+show_hostname = false
+show_directory = true
+show_git = false
+show_time = false
+
+primary = "#FFFFFF"
+secondary = "#B0B0B0"
+accent = "#6EE7B7"
+background = "#0E1117"
+foreground = "#E5E7EB"
+directory = "#FFFFFF"
+git = "#A7F3D0"
+time = "#9CA3AF"
+success = "#6EE7B7"
+error = "#F87171"
+separator = "•"

@@ -1,0 +1,23 @@
+name = "Cloud Light"
+
+layout = "power"
+
+prompt_symbol = "❯"
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+
+primary = "#334155"
+secondary = "#475569"
+accent = "#0F766E"
+background = "#F8FAFC"
+foreground = "#0F172A"
+directory = "#0E7490"
+git = "#14B8A6"
+time = "#64748B"
+success = "#16A34A"
+error = "#DC2626"
+separator = "│"

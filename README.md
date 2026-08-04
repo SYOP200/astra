@@ -100,6 +100,18 @@ Run:
 ./target/release/astra
 ```
 
+Homebrew (local formula):
+
+```bash
+brew install --build-from-source ./astra-shell.rb
+```
+
+If you add this repository as a tap, install it with:
+
+```bash
+brew install syop200/astra-shell/astra-shell
+```
+
 ## Usage
 
 Start Astra:
@@ -170,6 +182,9 @@ Built-in themes:
 - midnight
 - matrix
 - obsidian
+- dark
+- light
+- minimal
 
 Themes control:
 

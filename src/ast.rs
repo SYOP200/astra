@@ -15,6 +15,7 @@ pub struct Command {
     pub args: Vec<String>,
 
     /// Input/output redirections attached to this command.
+    #[allow(dead_code)]
     pub redirects: Vec<Redirect>,
 }
 
@@ -64,6 +65,12 @@ pub enum AstNode {
     /// ```
     Pipe(Pipeline),
 
+    /// Redirects attached to a command.
+    Redirect {
+        command: Command,
+        redirects: Vec<Redirect>,
+    },
+
     /// Logical AND.
     ///
     /// ```text
@@ -82,6 +89,7 @@ pub enum AstNode {
     Empty,
 }
 
+#[allow(dead_code)]
 impl Command {
     /// Create a new command.
     pub fn new(program: impl Into<String>) -> Self {
@@ -103,6 +111,7 @@ impl Command {
     }
 }
 
+#[allow(dead_code)]
 impl Pipeline {
     /// Create an empty pipeline.
     pub fn new() -> Self {
@@ -127,6 +136,7 @@ impl Pipeline {
     }
 }
 
+#[allow(dead_code)]
 impl Redirect {
     pub fn stdout(path: impl Into<PathBuf>) -> Self {
         Self::Stdout(path.into())

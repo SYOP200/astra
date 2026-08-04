@@ -1,0 +1,23 @@
+name = "Jet Dark"
+
+layout = "power"
+
+prompt_symbol = "❯"
+
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+
+primary = "#D7DDE8"
+secondary = "#A9B4CD"
+accent = "#82B1FF"
+background = "#090B10"
+foreground = "#F5F7FF"
+directory = "#A5D6FF"
+git = "#8AB4FF"
+time = "#B0BEC5"
+success = "#7DD47D"
+error = "#F47C7C"
+separator = "│"

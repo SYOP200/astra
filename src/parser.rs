@@ -1,5 +1,4 @@
-use crate::ast::{AstNode, Command, Redirect};
-use crate::ast::*;
+use crate::ast::{AstNode, Command, Pipeline, Redirect};
 use crate::lexer::Token;
 
 pub fn parse(tokens: &[Token]) -> AstNode {
@@ -32,10 +31,7 @@ pub fn parse(tokens: &[Token]) -> AstNode {
     if tokens.iter().any(|t| {
         matches!(
             t,
-            Token::RedirectOut
-                | Token::RedirectAppend
-                | Token::RedirectIn
-                | Token::RedirectErr
+            Token::RedirectOut | Token::RedirectAppend | Token::RedirectIn | Token::RedirectErr
         )
     }) {
         return parse_redirect(tokens);
@@ -81,7 +77,7 @@ fn parse_pipe(tokens: &[Token]) -> AstNode {
         commands.push(parse_command(&current));
     }
 
-    AstNode::Pipe(commands)
+    AstNode::Pipe(Pipeline { commands })
 }
 
 fn parse_redirect(tokens: &[Token]) -> AstNode {
