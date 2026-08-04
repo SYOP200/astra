@@ -32,6 +32,9 @@ install:
 uninstall:
 	sudo rm -f /usr/local/bin/$(PROJECT)
 
+brew:
+	brew install --build-from-source ./astra-shell.rb
+
 docker:
 	docker build -t $(PROJECT) .
 

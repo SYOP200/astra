@@ -1,0 +1,6 @@
+# Astra script example
+# This file uses the simple .astra script format.
+# Each line becomes a shell command.
+
+pwd
+ls -la

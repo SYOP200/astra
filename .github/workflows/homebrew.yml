@@ -1,0 +1,29 @@
+name: Homebrew Formula Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  brew-build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          stable: true
+
+      - name: Install from local Homebrew formula
+        run: |
+          brew install --build-from-source ./astra-shell.rb
+
+      - name: Verify Astra runtime
+        run: |
+          astra --version
+          astra --theme-list

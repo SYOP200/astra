@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use std::{collections::HashMap, fs, path::PathBuf};
+use toml::Value;
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(default)]
@@ -209,6 +210,30 @@ impl Config {
         }
 
         theme
+    }
+
+    pub fn save_theme(theme_name: &str) -> Result<(), std::io::Error> {
+        let path = dirs::home_dir()
+            .unwrap_or_else(|| PathBuf::from("."))
+            .join(".astrarc");
+        let mut document = if path.exists() {
+            let contents = fs::read_to_string(&path).unwrap_or_default();
+            toml::from_str(&contents).unwrap_or_else(|_| Value::Table(toml::map::Map::new()))
+        } else {
+            Value::Table(toml::map::Map::new())
+        };
+
+        let table = document.as_table_mut().unwrap();
+        let general = table
+            .entry("general")
+            .or_insert_with(|| Value::Table(toml::map::Map::new()));
+
+        if let Value::Table(general) = general {
+            general.insert("theme".into(), Value::String(theme_name.into()));
+        }
+
+        let contents = toml::to_string_pretty(&document).unwrap_or_default();
+        fs::write(path, contents)
     }
 }
 

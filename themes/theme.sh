@@ -11,4 +11,4 @@ echo "6) Dark"
 echo "7) Light"
 echo "8) Minimal"
 
-echo "\nPick a theme number or edit ~/.astrarc to choose a theme manually."
+echo "\nUse 'astra --theme-set <theme>' or edit ~/.astrarc to choose a theme manually."

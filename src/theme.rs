@@ -106,11 +106,18 @@ impl Theme {
     }
 }
 
+pub fn available() -> &'static [&'static str] {
+    &[
+        "crimson", "default", "matrix", "midnight", "obsidian", "dark", "light", "minimal",
+    ]
+}
+
 pub fn load(name: &str) -> Theme {
     let canonical = name.trim().to_ascii_lowercase();
 
     let source = match canonical.as_str() {
         "crimson" => include_str!("../themes/crimson.toml"),
+        "default" => include_str!("../themes/default.toml"),
         "midnight" => include_str!("../themes/midnight.toml"),
         "matrix" => include_str!("../themes/matrix.toml"),
         "obsidian" => include_str!("../themes/obsidian.toml"),

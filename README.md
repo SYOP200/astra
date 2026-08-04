@@ -132,6 +132,18 @@ Crimson
 ❯
 ```
 
+Astra also supports CLI helpers and simple Astra script files:
+
+```bash
+astra --help
+astra --version
+astra --theme-list
+astra --theme-show
+astra --theme-set dark
+astra --eval "pwd"
+astra examples/example.astra
+```
+
 Astra executes standard system commands:
 
 ```bash

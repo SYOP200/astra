@@ -2,14 +2,14 @@
 pub enum Token {
     Word(String),
 
-    Pipe,          // |
-    And,           // &&
-    Or,            // ||
+    Pipe, // |
+    And,  // &&
+    Or,   // ||
 
-    RedirectOut,   // >
-    RedirectAppend,// >>
-    RedirectIn,    // <
-    RedirectErr,   // 2>
+    RedirectOut,    // >
+    RedirectAppend, // >>
+    RedirectIn,     // <
+    RedirectErr,    // 2>
 }
 
 pub fn tokenize(input: &str) -> Vec<Token> {
@@ -55,6 +55,17 @@ pub fn tokenize(input: &str) -> Vec<Token> {
 
             '"' => {
                 in_double = true;
+            }
+
+            '#' => {
+                if !in_single && !in_double {
+                    if !current.is_empty() {
+                        tokens.push(Token::Word(current.clone()));
+                        current.clear();
+                    }
+                    break;
+                }
+                current.push('#');
             }
 
             ' ' | '\t' => {
