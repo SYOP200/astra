@@ -1,0 +1,57 @@
+edition = "2024"
+
+max_width = 80
+hard_tabs = false
+tab_spaces = 4
+
+newline_style = "Unix"
+
+use_small_heuristics = "Default"
+
+imports_granularity = "Crate"
+
+group_imports = "StdExternalCrate"
+
+reorder_imports = true
+
+reorder_modules = true
+
+format_strings = true
+
+format_macro_matchers = true
+
+format_macro_bodies = true
+
+normalize_comments = true
+
+normalize_doc_attributes = true
+
+wrap_comments = true
+
+comment_width = 80
+
+match_block_trailing_comma = true
+
+use_field_init_shorthand = true
+
+use_try_shorthand = true
+
+trailing_comma = "Vertical"
+
+fn_params_layout = "Tall"
+
+brace_style = "SameLineWhere"
+
+control_brace_style = "AlwaysSameLine"
+
+blank_lines_upper_bound = 1
+
+blank_lines_lower_bound = 0
+
+merge_derives = true
+
+overflow_delimited_expr = true
+
+struct_lit_single_line = false
+
+where_single_line = false
