@@ -3,7 +3,7 @@ class AstraShell < Formula
   homepage "https://github.com/astra-shell/astra-shell"
   url "https://github.com/astra-shell/astra-shell/archive/refs/tags/v1.0.0.tar.gz"
   version "1.0.0"
-  sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+  sha256 "4856e074fc097c3e356b826dc3998fef6f988c9158122ed6c3e5b41d2348695b"
   license "MIT"
   head "https://github.com/astra-shell/astra-shell.git", branch: "main"
 
