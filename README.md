@@ -16,12 +16,6 @@
 </a>
 </div>
 
-<div align=center>
-
-<a> [██████████████░░░░░░░] 70% </a>
-
-</div>
-
 # Astra Shell
 
 A modern shell built in Rust for Unix-like systems, with macOS as the primary development platform.
