@@ -1,4 +1,8 @@
-use std::{env, process};
+use std::{
+    env,
+    io::{stdout, Write},
+    process,
+};
 
 use crate::config::Config;
 use crate::theme;
@@ -30,6 +34,7 @@ pub fn execute(program: &str, args: &[String], _config: &Config) -> Option<i32> 
 
         "clear" => {
             print!("\x1B[2J\x1B[1;1H");
+            stdout().flush().ok();
             Some(0)
         }
 
@@ -55,6 +60,7 @@ pub fn execute(program: &str, args: &[String], _config: &Config) -> Option<i32> 
             println!("  clear           Clear the terminal");
             println!("  version         Show Astra version");
             println!("  about           Show project information");
+            println!("  alias           List configured aliases");
             println!("  theme-list      List available themes");
             println!("  theme-show      Show current theme");
             println!("  theme-set NAME  Set and save the shell theme");
@@ -77,6 +83,19 @@ pub fn execute(program: &str, args: &[String], _config: &Config) -> Option<i32> 
                 println!("- {}", theme_name);
             }
             Some(0)
+        }
+
+        "alias" => {
+            if _config.aliases.is_empty() {
+                println!("No aliases configured.");
+                Some(0)
+            } else {
+                println!("Configured aliases:");
+                for (name, value) in &_config.aliases {
+                    println!("  {} = {}", name, value);
+                }
+                Some(0)
+            }
         }
 
         "theme-show" => {

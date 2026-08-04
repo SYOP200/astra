@@ -1,7 +1,28 @@
 use rustyline::history::DefaultHistory;
 use rustyline::Editor;
 
-use crate::{completion::AstraCompleter, config, executor, history, lexer, parser, prompt};
+use crate::{
+    aliases::AliasManager, completion::AstraCompleter, config, executor, history, lexer, parser,
+    prompt,
+};
+
+fn print_startup_art(config: &config::Config) {
+    if !config.general.startup_message {
+        return;
+    }
+
+    println!(r#"    ___   _______________  ___ 
+   ╱   │ ╱ ___╱_  __╱ __ ╲╱   │
+  ╱ ╱│ │ ╲__ ╲ ╱ ╱ ╱ ╱_╱ ╱ ╱│ │
+ ╱ ___ │___╱ ╱╱ ╱ ╱ _, _╱ ___ │
+╱_╱  │_╱____╱╱_╱ ╱_╱ │_╱_╱  │_│
+                               "#);
+    println!("Astra Shell {}", env!("CARGO_PKG_VERSION"));
+    println!("A modern, customizable shell for macOS.");
+    println!("");
+    println!("Loading Astra Shell...");
+    println!("");
+}
 
 pub fn start() {
     let mut readline =
@@ -10,6 +31,7 @@ pub fn start() {
     readline.set_helper(Some(AstraCompleter::new()));
 
     let mut config = config::load();
+    print_startup_art(&config);
     history::load(&mut readline, &config);
 
     loop {
@@ -39,7 +61,9 @@ pub fn start() {
 }
 
 pub fn execute_line(line: &str, config: &config::Config) -> i32 {
-    let tokens = lexer::tokenize(line);
+    let alias_manager = AliasManager::new(config.aliases.clone());
+    let expanded_line = alias_manager.expand(line);
+    let tokens = lexer::tokenize(&expanded_line);
     let ast = parser::parse(&tokens);
     executor::execute(ast, config)
 }

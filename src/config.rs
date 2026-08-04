@@ -88,7 +88,11 @@ impl Default for Config {
             history: HistoryConfig::default(),
             completion: CompletionConfig::default(),
             behavior: BehaviorConfig::default(),
-            aliases: HashMap::new(),
+            aliases: HashMap::from([
+                ("ls".into(), "eza".into()),
+                ("ll".into(), "eza -la".into()),
+                ("g".into(), "git".into()),
+            ]),
             plugins: PluginConfig::default(),
             appearance: AppearanceConfig::default(),
         }
@@ -174,14 +178,72 @@ impl Default for AppearanceConfig {
     }
 }
 
+const DEFAULT_ASTRARC: &str = r#"[general]
+theme = "default"
+startup_message = true
+update_check = false
+telemetry = false
+
+[prompt]
+show_user = true
+show_hostname = true
+show_directory = true
+show_git = true
+show_time = true
+symbol = ">"
+separator = "|"
+
+[history]
+enabled = true
+file = "~/.astra_history"
+size = 10000
+deduplicate = true
+ignore_duplicates = true
+
+[completion]
+enabled = true
+case_sensitive = false
+show_hidden_files = false
+max_results = 20
+
+[behavior]
+confirm_exit = true
+allow_scripts = true
+auto_cd = false
+vi_mode = false
+
+[plugins]
+enabled = true
+directory = "~/.astra/plugins"
+
+[appearance]
+unicode = true
+nerd_fonts = false
+animations = true
+compact = false
+
+[aliases]
+ls = "eza"
+ll = "eza -la"
+g = "git"
+"#;
+
 impl Config {
+    pub fn default_config_text() -> &'static str {
+        DEFAULT_ASTRARC
+    }
+
     pub fn load() -> Self {
         let path = dirs::home_dir()
             .unwrap_or(PathBuf::from("."))
             .join(".astrarc");
 
         if !path.exists() {
-            return Self::default();
+            let default = Self::default();
+            if let Err(err) = fs::write(&path, DEFAULT_ASTRARC) {
+                eprintln!("astra: unable to create default ~/.astrarc: {}", err);
+            }
+            return default;
         }
 
         let contents = fs::read_to_string(path).unwrap_or_default();

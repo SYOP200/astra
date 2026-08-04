@@ -10,8 +10,8 @@ show_hostname = true
 show_directory = true
 show_git = true
 show_time = true
-symbol = "❯"
-separator = "│"
+symbol = ">"
+separator = "|"
 
 [history]
 enabled = true
@@ -32,6 +32,10 @@ allow_scripts = true
 auto_cd = false
 vi_mode = false
 
+[plugins]
+enabled = true
+directory = "~/.astra/plugins"
+
 [appearance]
 unicode = true
 nerd_fonts = false
@@ -39,4 +43,6 @@ animations = true
 compact = false
 
 [aliases]
-ll = "ls -la"
+ls = "eza"
+ll = "eza -la"
+g = "git"

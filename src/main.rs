@@ -4,6 +4,8 @@ mod lexer;
 mod parser;
 mod resolver;
 
+mod aliases;
+
 mod builtins;
 mod completion;
 mod config;
@@ -40,51 +42,7 @@ fn print_version() {
 }
 
 fn print_config_example() {
-    println!(
-        r#"[general]
-theme = "default"
-startup_message = true
-update_check = false
-telemetry = false
-
-[prompt]
-show_user = true
-show_hostname = true
-show_directory = true
-show_git = true
-show_time = true
-symbol = ">"
-separator = "|"
-
-[history]
-enabled = true
-file = "~/.astra_history"
-size = 10000
-deduplicate = true
-ignore_duplicates = true
-
-[completion]
-enabled = true
-case_sensitive = false
-show_hidden_files = false
-max_results = 20
-
-[behavior]
-confirm_exit = true
-allow_scripts = true
-auto_cd = false
-vi_mode = false
-
-[appearance]
-unicode = true
-nerd_fonts = false
-animations = true
-compact = false
-
-[aliases]
-ll = "ls -la"
-"#
-    );
+    println!("{}", config::Config::default_config_text());
 }
 
 fn run_theme_list() {

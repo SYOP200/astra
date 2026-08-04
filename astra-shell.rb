@@ -8,9 +8,19 @@ class AstraShell < Formula
   head "https://github.com/astra-shell/astra-shell.git", branch: "main"
 
   depends_on "rust" => :build
+  depends_on "eza"
 
   def install
+    ohai "Installing Astra Shell..."
     system "cargo", "install", *std_cargo_args
+  end
+
+  def caveats
+    <<~EOS
+      Astra Shell has been installed.
+      Run `astra` to start the shell.
+      Uninstall with `brew uninstall astra-shell`.
+    EOS
   end
 
   test do
