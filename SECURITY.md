@@ -6,8 +6,10 @@ All latest builds will have supported security. Update to the newest version to 
 
 | Version | Supported          |
 | ------- | ------------------ |
-| astra-0.1.0-alpha   | :white_check_mark: |
-| others   | :x:                |
+| astra-0.1.0-alpha   | :x: |
+| astra-0.4.0-beta| :white_check_mark: |
+| astra-0.5.0-beta   | :white_check_mark:       |
+| astra-1.0.0-stable | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
