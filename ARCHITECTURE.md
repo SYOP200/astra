@@ -1,0 +1,23 @@
+```
+Source
+ |
+Lexer
+ |
+Parser
+ |
+AST
+ |
+Semantic
+ |
+HIR
+ |
+Type Checker
+ |
+MIR
+ |
+Optimizer
+ |
+Codegen
+ |
+Executable
+```
