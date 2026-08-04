@@ -77,7 +77,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 Clone Astra:
 
 ```bash
-git clone https://github.com/SYOP200/astra-shell
+git clone https://github.com/astra-shell/astra-shell
 cd astra-shell
 ```
 
@@ -96,8 +96,14 @@ Run:
 Homebrew:
 
 ```bash
-brew tap syop200/astra-shell https://github.com/SYOP200/homebrew-astra-shell
-brew install --build-from-source syop200/astra-shell/astra-shell
+brew tap astra-shell/homebrew-astra-shell https://github.com/astra-shell/homebrew-astra-shell
+brew install --build-from-source astra-shell
+```
+
+If you see a tap trust warning, run:
+
+```bash
+brew trust astra-shell/homebrew-astra-shell
 ```
 
 If you want to install from the local formula in this repository instead:

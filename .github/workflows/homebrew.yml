@@ -24,12 +24,14 @@ jobs:
 
       - name: Tap the Astra Shell Homebrew formula
         run: |
-          brew untap syop200/astra-shell 2>/dev/null || true
-          brew tap syop200/astra-shell https://github.com/SYOP200/homebrew-astra-shell
+          brew untap astra-shell/homebrew-astra-shell 2>/dev/null || true
+          brew tap astra-shell/homebrew-astra-shell https://github.com/astra-shell/homebrew-astra-shell
 
       - name: Install Astra from tap
+        env:
+          HOMEBREW_NO_REQUIRE_TAP_TRUST: 1
         run: |
-          brew install --build-from-source syop200/astra-shell/astra-shell
+          brew install --build-from-source astra-shell
 
       - name: Verify Astra runtime
         run: |
