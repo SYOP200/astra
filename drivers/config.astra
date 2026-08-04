@@ -1,0 +1,59 @@
+// Astra project configuration
+
+project {
+    name = "astra-project"
+    version = "0.1.0"
+    edition = "2026"
+}
+
+
+// Compiler settings
+compiler {
+    optimization = true
+    debug = true
+
+    target = "native"
+
+    warnings = true
+}
+
+
+// Build settings
+build {
+    output = "build"
+
+    sources = [
+        "src"
+    ]
+
+    entry = "main.astra"
+}
+
+
+// Package information
+package {
+    name = "astra-project"
+
+    authors = [
+        "Developer"
+    ]
+
+    license = "MIT"
+}
+
+
+// Language features
+features {
+    async = true
+    generics = true
+    modules = true
+    unsafe = false
+}
+
+
+// Runtime settings
+runtime {
+    garbage_collector = "none"
+
+    threads = 4
+}
