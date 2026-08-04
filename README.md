@@ -93,16 +93,17 @@ Run:
 ./target/release/astra
 ```
 
-Homebrew (local formula):
+Homebrew:
+
+```bash
+brew tap syop200/astra-shell https://github.com/SYOP200/homebrew-astra-shell
+brew install --build-from-source syop200/astra-shell/astra-shell
+```
+
+If you want to install from the local formula in this repository instead:
 
 ```bash
 brew install --build-from-source ./astra-shell.rb
-```
-
-If you add this repository as a tap, install it with:
-
-```bash
-brew install syop200/astra-shell/astra-shell
 ```
 
 ## Usage

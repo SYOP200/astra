@@ -22,20 +22,14 @@ jobs:
         with:
           stable: true
 
-      - name: Create temporary tap and install formula
-        env:
-          TAP_NAME: "$GITHUB_ACTOR/astra-shell-tap"
+      - name: Tap the Astra Shell Homebrew formula
         run: |
-          # Create a temporary tap for this run
-          brew tap-new "$TAP_NAME"
+          brew untap syop200/astra-shell 2>/dev/null || true
+          brew tap syop200/astra-shell https://github.com/SYOP200/homebrew-astra-shell
 
-          # Copy the local formula into the tap's Formula/ directory
-          TAP_REPO=$(brew --repo "$TAP_NAME")
-          mkdir -p "$TAP_REPO/Formula"
-          cp ./astra-shell.rb "$TAP_REPO/Formula/astra-shell.rb"
-
-          # Install the formula from the tap (builds from source)
-          brew install --build-from-source "$TAP_NAME/astra-shell"
+      - name: Install Astra from tap
+        run: |
+          brew install --build-from-source syop200/astra-shell/astra-shell
 
       - name: Verify Astra runtime
         run: |
