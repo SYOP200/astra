@@ -107,7 +107,11 @@ If you see a tap trust warning, run:
 ```bash
 brew trust astra-shell/homebrew-astra-shell
 ```
-
+then re-run:
+```bash
+brew tap astra-shell/homebrew-astra-shell https://github.com/astra-shell/homebrew-astra-shell
+brew install --build-from-source astra-shell
+```
 If you want to install from the local formula in this repository instead:
 
 ```bash
