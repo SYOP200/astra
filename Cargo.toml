@@ -8,7 +8,7 @@ name = "astra"
 path = "src/main.rs"
 
 [dependencies]
-nix = "0.30"
+nix = "0.31"
 libc = "0.2"
 
 crossterm = "0.29"
