@@ -12,6 +12,7 @@
 ![macOS](https://img.shields.io/badge/Primary%20Platform-macOS-8B0000?style=flat-square&logo=apple&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Community-660000?style=flat-square&logo=github&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Runs%20on-Unix-660000?style=flat-square&logo=linux&logoColor=white)
+![Open Source](https://img.shields.io/badge/Runs%20with-Cargo-660000?style=flat-square&logo=cargo&logoColor=white)
 
 </a>
 </div>
