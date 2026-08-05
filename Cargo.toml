@@ -14,7 +14,7 @@ libc = "0.2"
 crossterm = "0.29"
 rustyline = "14"
 
-git2 = "0.20"
+git2 = "0.21"
 
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
