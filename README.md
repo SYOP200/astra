@@ -54,11 +54,16 @@ Astra is now prepared for its first stable release and includes a stable CLI, cu
 - Built-in shell commands
 - Modular architecture
 - Plugin framework (in development)
-- Optional built in AI plugin
+- Optional built-in AI plugin
 
 ## Screenshots
 
-Coming soon.
+Shell (Crimson theme):
+<a>
+
+<img width="565" height="213" alt="Screenshot 2026-08-05 at 12 48 32" src="https://github.com/user-attachments/assets/d92fe672-dbdc-4539-b095-75228224029b" />
+
+</a>
 
 ## Installation
 
