@@ -3,3 +3,4 @@
 *.json linguist-detectable
 *.plist linguist-detectable
 *.txt linguist-detectable
+*.astra linguist-detectable
